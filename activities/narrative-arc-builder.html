@@ -3,513 +3,216 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Constructor de Arco Narrativo · Misión 2</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<title>Cartas de Dilemas Éticos · Misión 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,700;0,800;1,400;1,700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --forest: #533477; --forest-mid: #6b45a0; --forest-light: #f0eaf8;
-  --gold: #6AC7DC; --gold-light: #e8f7fa;
-  --ink: #1a1a1a; --ink-mid: #444444; --ink-soft: #7a7979;
-  --paper: #fafafa; --white: #fff; --border: rgba(83,52,119,0.12);
+  --forest: #533477;
+  --forest-mid: #6b45a0;
+  --forest-light: #f0eaf8;
+  --gold: #6AC7DC;
+  --gold-light: #e8f7fa;
+  --ink: #1a1a1a;
+  --ink-mid: #444444;
+  --ink-soft: #7a7979;
+  --paper: #fafafa;
+  --white: #fff;
+  --border: rgba(83,52,119,0.12);
+  --red: #c0392b; --red-bg: #fdecea;
+  --green: #1a6b3c; --green-bg: #e8f5e9;
 }
 body { font-family: 'Inter', sans-serif; background: var(--paper); color: var(--ink); min-height: 100vh; }
 
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(250,250,250,0.95); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 1.5rem; display: flex; align-items: center;
+  justify-content: space-between; height: 52px;
+}
+.nav-logo { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 700; color: var(--forest); text-decoration: none; }
+.nav-logo span { color: var(--ink-soft); font-weight: 400; }
+.nav-back { font-size: 13px; color: var(--ink-mid); text-decoration: none; }
+.nav-back:hover { color: var(--forest); }
+
 .activity-header { background: var(--forest); padding: 2rem; }
 .mission-tag { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 4px; }
-.activity-title { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; color: white; letter-spacing: -0.03em; margin-bottom: 2px; }
+.activity-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.6rem; font-weight: 800; color: white; letter-spacing: -0.03em; margin-bottom: 2px; }
 .activity-subtitle { font-size: 13px; color: rgba(255,255,255,0.5); font-style: italic; }
 
-.wizard-progress {
-  background: white; border-bottom: 1px solid var(--border);
-  padding: 1rem 2rem;
+.progress-bar-wrap { background: var(--ink); padding: 0.75rem 2rem; display: flex; align-items: center; gap: 1rem; }
+.progress-label { font-size: 12px; color: rgba(255,255,255,0.5); white-space: nowrap; }
+.progress-track { flex: 1; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--gold); transition: width 0.4s; }
+.progress-count { font-size: 12px; color: rgba(255,255,255,0.5); white-space: nowrap; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; }
+
+.scenario-area { max-width: 780px; margin: 0 auto; padding: 2rem; }
+
+.scenario-card { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 1.5rem; }
+.scenario-card-header { background: var(--forest); padding: 1.5rem; }
+.scenario-num { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 6px; }
+.scenario-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 6px; }
+.scenario-context { font-size: 13px; color: rgba(255,255,255,0.55); font-style: italic; }
+
+.scenario-card-body { padding: 1.5rem; }
+.scenario-situation { font-size: 15px; color: var(--ink); line-height: 1.7; margin-bottom: 1.5rem; background: var(--paper); border-radius: 6px; padding: 1.25rem; border-left: 3px solid var(--gold); }
+.question { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 1rem; }
+
+.options-grid { display: grid; gap: 0.75rem; }
+.option-btn {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 1rem 1.25rem; border-radius: 6px;
+  border: 1.5px solid var(--border); background: white;
+  cursor: pointer; text-align: left; transition: all 0.15s; width: 100%;
 }
-.step-dots { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-.step-dot {
-  width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center;
-  justify-content: center; font-size: 11px; font-weight: 500; transition: all 0.2s;
-  border: 1.5px solid var(--border); background: white; color: var(--ink-soft);
-  flex-shrink: 0;
+.option-btn:hover:not(:disabled) { border-color: var(--forest); background: var(--forest-light); }
+.option-btn.selected-correct { border-color: var(--green); background: var(--green-bg) !important; }
+.option-btn.selected-wrong { border-color: var(--red); background: var(--red-bg) !important; }
+.option-btn.reveal-correct { border-color: var(--green); background: var(--green-bg); }
+.option-btn:disabled { cursor: default; }
+
+.option-letter {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--paper); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 500; flex-shrink: 0; margin-top: 1px; color: var(--ink-soft);
 }
-.step-dot.done { background: var(--forest); border-color: var(--forest); color: white; }
-.step-dot.active { background: var(--gold); border-color: var(--gold); color: #1a1a1a; }
-.step-connector { flex: 1; height: 1.5px; background: var(--border); min-width: 8px; max-width: 24px; }
-.step-connector.done { background: var(--forest); }
-.step-label { font-size: 12px; color: var(--ink-soft); margin-top: 6px; }
+.option-btn.selected-correct .option-letter { background: var(--green); border-color: var(--green); color: white; }
+.option-btn.selected-wrong .option-letter { background: var(--red); border-color: var(--red); color: white; }
+.option-btn.reveal-correct .option-letter { background: var(--green); border-color: var(--green); color: white; }
+.option-text { font-size: 14px; color: var(--ink-mid); line-height: 1.55; }
 
-.wizard-body { max-width: 680px; margin: 0 auto; padding: 2.5rem 2rem; }
+.feedback-reveal { margin-top: 1.25rem; padding: 1.25rem; border-radius: 6px; display: none; animation: fadeIn 0.3s; }
+.feedback-reveal.show { display: block; }
+.feedback-reveal.correct { background: var(--green-bg); border: 1px solid rgba(26,107,60,0.3); }
+.feedback-reveal.wrong { background: var(--red-bg); border: 1px solid rgba(192,57,43,0.3); }
+.feedback-reveal-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+.feedback-reveal.correct .feedback-reveal-title { color: var(--green); }
+.feedback-reveal.wrong .feedback-reveal-title { color: var(--red); }
+.feedback-reveal-body { font-size: 13px; color: var(--ink-mid); line-height: 1.6; }
+.reflection-prompt { margin-top: 0.75rem; padding: 0.75rem; background: rgba(255,255,255,0.7); border-radius: 4px; font-size: 13px; color: var(--ink-soft); font-style: italic; }
 
-.step-header { margin-bottom: 1.75rem; }
-.step-num { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
-.step-title { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--ink); letter-spacing: -0.03em; margin-bottom: 4px; }
-.step-desc { font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
-.step-hint { background: var(--gold-light); border: 1px solid rgba(200,168,75,0.3); border-radius: 6px; padding: 0.875rem 1rem; margin-bottom: 1.25rem; font-size: 13px; color: #1a6e7e; line-height: 1.6; }
-.step-hint strong { color: #1a4a56; }
-
-.form-group { margin-bottom: 1.25rem; }
-.form-label { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 6px; display: block; }
-.form-label span { font-weight: 400; color: var(--ink-soft); font-style: italic; }
-textarea, input[type=text] {
-  width: 100%; padding: 10px 12px; border: 1.5px solid var(--border);
-  border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px;
-  color: var(--ink); background: white; resize: vertical; transition: border-color 0.2s;
-  line-height: 1.55;
-}
-textarea:focus, input[type=text]:focus { outline: none; border-color: var(--forest); }
-textarea { min-height: 80px; }
-.char-count { font-size: 11px; color: var(--ink-soft); text-align: right; margin-top: 4px; }
-
-.missions-builder { display: flex; flex-direction: column; gap: 0.75rem; }
-.mission-row { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; }
-.mission-num-badge { width: 28px; height: 28px; border-radius: 50%; background: var(--forest); color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; margin-top: 1px; flex-shrink: 0; }
-.add-mission-btn {
-  display: flex; align-items: center; gap: 8px; padding: 8px 12px;
-  border: 1.5px dashed var(--border); border-radius: 6px; background: white;
-  font-size: 13px; color: var(--ink-soft); cursor: pointer; transition: all 0.15s;
-}
-.add-mission-btn:hover { border-color: var(--forest); color: var(--forest); }
-
-.nav-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; }
-.btn-nav { font-size: 14px; font-weight: 500; padding: 11px 24px; border-radius: 6px; border: 1.5px solid var(--border); background: white; color: var(--ink-mid); cursor: pointer; transition: all 0.15s; }
+.nav-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; flex-wrap: wrap; gap: 0.75rem; }
+.btn-nav { font-size: 14px; font-weight: 500; padding: 10px 22px; border-radius: 6px; border: 1.5px solid var(--border); background: white; color: var(--ink-mid); cursor: pointer; transition: all 0.15s; }
 .btn-nav:hover { border-color: var(--forest); color: var(--forest); }
 .btn-nav.primary { background: var(--forest); border-color: var(--forest); color: white; }
 .btn-nav.primary:hover { background: var(--forest-mid); }
 .btn-nav:disabled { opacity: 0.4; cursor: default; }
 
-/* SUMMARY */
-.summary-card {
-  background: white; border: 1px solid var(--border); border-radius: 10px;
-  overflow: hidden;
-}
-.summary-header { background: var(--forest); padding: 1.75rem 2rem; }
-.summary-header h2 { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; color: white; margin-bottom: 4px; }
-.summary-header .title-out { font-size: 1rem; color: var(--gold); font-weight: 500; }
-.summary-body { padding: 1.5rem 2rem; display: flex; flex-direction: column; gap: 1.25rem; }
-.summary-section { border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
-.summary-section-header { background: var(--forest-light); padding: 0.75rem 1rem; font-size: 12px; font-weight: 500; color: var(--forest); letter-spacing: 0.08em; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
-.summary-section-body { padding: 1rem; }
-.summary-field { margin-bottom: 0.875rem; }
-.summary-field:last-child { margin-bottom: 0; }
-.summary-field-label { font-size: 11px; color: var(--ink-soft); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.08em; }
-.summary-field-value { font-size: 14px; color: var(--ink); line-height: 1.6; }
-.summary-missions { display: flex; flex-direction: column; gap: 8px; }
-.summary-mission { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; }
-.summary-mission-badge { width: 28px; height: 28px; border-radius: 50%; background: var(--forest); color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; flex-shrink: 0; }
-.summary-mission-text { font-size: 14px; color: var(--ink); line-height: 1.55; }
-
-.summary-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-.btn-download-sum { font-size: 13px; font-weight: 500; padding: 10px 18px; border-radius: 6px; background: var(--forest); border: none; color: white; cursor: pointer; }
-.btn-print { font-size: 13px; font-weight: 500; padding: 10px 18px; border-radius: 6px; border: 1.5px solid var(--border); background: white; color: var(--ink-mid); cursor: pointer; }
-.btn-restart { font-size: 13px; color: var(--ink-soft); background: none; border: none; cursor: pointer; padding: 10px 4px; }
+.final-panel { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; display: none; }
+.final-panel.show { display: block; }
+.final-header { background: var(--forest); padding: 2rem; text-align: center; }
+.final-header h2 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.8rem; font-weight: 800; color: white; margin-bottom: 6px; }
+.final-score { font-size: 1rem; color: rgba(255,255,255,0.6); }
+.final-body { padding: 2rem; }
+.final-score-big { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 3rem; font-weight: 800; color: var(--forest); text-align: center; line-height: 1; }
+.final-score-label { text-align: center; font-size: 14px; color: var(--ink-soft); margin-top: 4px; margin-bottom: 2rem; }
+.final-takeaways { display: flex; flex-direction: column; gap: 0.75rem; }
+.takeaway { display: flex; gap: 10px; padding: 1rem; background: var(--paper); border-radius: 6px; font-size: 14px; color: var(--ink-mid); line-height: 1.6; align-items: flex-start; }
+.takeaway-icon { flex-shrink: 0; font-size: 1rem; margin-top: 2px; }
+.final-cta { margin-top: 1.5rem; display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
 
 .download-bar { background: var(--ink); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
 .download-bar p { font-size: 13px; color: rgba(255,255,255,0.55); }
-.btn-dl { font-size: 13px; font-weight: 500; padding: 8px 18px; border-radius: 6px; background: var(--gold); border: none; color: #1a1a1a; cursor: pointer; }
-.btn-dl:hover { opacity: 0.85; }
+.btn-download { font-size: 13px; font-weight: 500; padding: 8px 18px; border-radius: 6px; background: var(--gold); border: none; color: #1a1a1a; cursor: pointer; }
+.btn-download:hover { opacity: 0.85; }
 
-@media (max-width: 600px) {
-  .wizard-body { padding: 1.5rem 1rem; }
-  .step-dot { width: 24px; height: 24px; font-size: 10px; }
-}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="../index.html" class="nav-logo" style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--forest);text-decoration:none;">Ethics Motivation <span style="color:var(--ink-soft);font-weight:400;">Lab</span></a>
-  <a href="index.html" style="font-size:13px;color:var(--ink-mid);text-decoration:none;">← Activity library</a>
+  <a href="../index.html" class="nav-logo">Ethics Motivation <span>Lab</span></a>
+  <a href="index.html" class="nav-back">← Activity library</a>
 </nav>
+
 <div class="activity-header">
-  <div class="mission-tag">Misión 2 · Actividad 2 · La Forja del Héroe</div>
-  <div class="activity-title">✏️ Constructor de Arco Narrativo</div>
-  <div class="activity-subtitle">Narrative Arc Builder · Hero's Journey Framework</div>
+  <div class="mission-tag">Misión 1 · El Origen del Juego</div>
+  <div class="activity-title">⚖️ Cartas de Dilemas Éticos</div>
+  <div class="activity-subtitle">Ethics Dilemma Cards · Gamification &amp; Dark Patterns</div>
 </div>
 
-<div class="wizard-progress">
-  <div class="step-dots" id="step-dots"></div>
-  <div class="step-label" id="step-label"></div>
+<div class="progress-bar-wrap">
+  <span class="progress-label">Progreso</span>
+  <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <span class="progress-count" id="progress-count">0 / 6</span>
 </div>
 
-<div class="wizard-body" id="wizard-body"></div>
+<div class="scenario-area">
+  <div id="scenario-container"></div>
+  <div class="final-panel" id="final-panel">
+    <div class="final-header">
+      <h2>¡Análisis completo!</h2>
+      <div class="final-score">Has analizado los 6 escenarios de dilemas éticos</div>
+    </div>
+    <div class="final-body">
+      <div class="final-score-big" id="final-score-num">0/6</div>
+      <div class="final-score-label">identificadas correctamente</div>
+      <div class="final-takeaways">
+        <div class="takeaway"><span class="takeaway-icon">🎯</span><div><strong>Manipulación vs. motivación:</strong> La diferencia no está en la mecánica, sino en si respeta la autonomía del usuario y si genera valor real de aprendizaje.</div></div>
+        <div class="takeaway"><span class="takeaway-icon">⚖️</span><div><strong>Dark patterns:</strong> Las mecánicas que crean ansiedad, dependencia o presión social negativa son éticamente cuestionables, incluso si aumentan el engagement.</div></div>
+        <div class="takeaway"><span class="takeaway-icon">🌱</span><div><strong>Diseño ético:</strong> Las mejores mecánicas apoyan la motivación intrínseca, son transparentes, inclusivas y respetan el bienestar del aprendiz.</div></div>
+      </div>
+      <div class="final-cta">
+        <button class="btn-nav" onclick="restart()">↺ Reiniciar</button>
+        <a href="game-mechanics-decoder.html" style="text-decoration:none;"><button class="btn-nav primary">Siguiente actividad →</button></a>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="download-bar">
-  <p>Ethics Motivation Lab · EPG UPC · Jessica Vlasica · Misión 2</p>
-  <button class="btn-dl" onclick="downloadHTML()">⬇ Descargar HTML para Blackboard</button>
+  <p>Ethics Motivation Lab · EPG UPC · Jessica Vlasica · Misión 1</p>
+  <button class="btn-download" onclick="downloadHTML()">⬇ Descargar HTML para Blackboard</button>
 </div>
 
 <script>
-const STEPS = [
-  {
-    icon: '🧙', num: 'Paso 1 de 9', title: 'Bienvenido/a al Constructor',
-    desc: 'Vas a diseñar el arco narrativo completo de tu experiencia gamificada usando el Viaje del Héroe como estructura. Este será el documento base para tu TA1 (20% de la nota).',
-    hint: '<strong>¿Qué vas a crear?</strong> Un canvas narrativo completo basado en el Viaje del Héroe, aplicado a tu contexto educativo. Tiempo recomendado: 40 minutos.',
-    type: 'intro',
-  },
-  {
-    icon: '🦸', num: 'Paso 2 de 9', title: 'El Héroe',
-    desc: 'Define quién es tu estudiante/usuario. Esta es la persona que vivirá tu experiencia gamificada.',
-    hint: '💡 <strong>Pregunta clave:</strong> ¿Quién vivirá esta experiencia? Sé específico/a sobre su perfil, conocimientos previos y motivaciones. Piensa en un contexto educativo real (tu curso, un taller, una capacitación).',
-    type: 'fields',
-    fields: [
-      { key: 'hero_who', label: '¿Quién es tu héroe/heroína?', placeholder: 'Ej: Estudiantes de pregrado, primer ciclo, curso de Introducción a la Investigación', hint:'Perfil del estudiante/usuario', maxlen: 200 },
-      { key: 'hero_knows', label: '¿Qué sabe o puede hacer actualmente?', placeholder: 'Ej: Reconoce los conceptos básicos de investigación pero no ha diseñado un proyecto propio', hint:'Conocimientos y habilidades de partida', maxlen: 400, tall: true },
-      { key: 'hero_struggles', label: '¿Qué frustraciones, miedos o barreras enfrenta?', placeholder: 'Ej: Se siente abrumado por la metodología, tiene miedo a equivocarse, no ve la relevancia práctica', hint:'Pain points y obstáculos', maxlen: 400, tall: true },
-    ]
-  },
-  {
-    icon: '🌍', num: 'Paso 3 de 9', title: 'El Mundo',
-    desc: 'Define el contexto y la situación inicial de tu experiencia gamificada.',
-    hint: '💡 <strong>El mundo ordinario:</strong> ¿Cómo es el contexto de aprendizaje antes de que empiece la experiencia? ¿Qué está funcionando y qué no?',
-    type: 'fields',
-    fields: [
-      { key: 'world_context', label: 'Contexto educativo o corporativo', placeholder: 'Ej: Curso virtual de 6 sesiones, modalidad asíncrona, estudiantes de posgrado con experiencia laboral...', maxlen: 300, tall: true },
-      { key: 'world_current', label: 'Situación actual (sin gamificación)', placeholder: 'Ej: Clases expositivas, baja participación en foros, evaluación solo con examen final...', maxlen: 300, tall: true },
-    ]
-  },
-  {
-    icon: '⚔️', num: 'Paso 4 de 9', title: 'El Conflicto y la Transformación',
-    desc: 'Define el desafío central y la transformación prometida al héroe.',
-    hint: '💡 <strong>El conflicto:</strong> Sin un desafío real y significativo, la gamificación se convierte en entretenimiento vacío. El conflicto debe conectar con las frustraciones reales del héroe.',
-    type: 'fields',
-    fields: [
-      { key: 'conflict', label: 'Conflicto o desafío central', placeholder: 'Ej: Los estudiantes no conectan la teoría con su práctica profesional y abandonan los cursos a mitad de camino', maxlen: 300, tall: true },
-      { key: 'transformation', label: 'Transformación prometida (antes → después)', placeholder: 'Ej: De espectadores pasivos a diseñadores activos de experiencias de aprendizaje', maxlen: 300 },
-      { key: 'value_prop', label: 'Propuesta de valor para el héroe', placeholder: 'Ej: Al terminar tendrás un proyecto real, habilidades aplicables esta semana y una red de pares', maxlen: 300 },
-    ]
-  },
-  {
-    icon: '🗺️', num: 'Paso 5 de 9', title: 'Estructura de Misiones',
-    desc: 'Define las 3 a 5 misiones que articulan el viaje del héroe. Cada misión debe tener un nombre narrativo y un propósito de aprendizaje claro.',
-    hint: '💡 <strong>Nombres narrativos:</strong> En vez de "Módulo 1", usa nombres que evoquen el viaje: "El Despertar", "La Prueba", "La Forja", "El Regreso". El nombre debe conectar con el contenido y con el arco emocional.',
-    type: 'missions',
-  },
-  {
-    icon: '⚡', num: 'Paso 6 de 9', title: 'Mecánicas Clave',
-    desc: 'Elige y justifica las mecánicas de juego principales de tu experiencia.',
-    hint: '💡 <strong>Selecciona con propósito:</strong> Cada mecánica debe responder a una necesidad pedagógica real, no a una moda. Pregúntate: ¿esta mecánica apoya la motivación intrínseca o crea dependencia externa?',
-    type: 'fields',
-    fields: [
-      { key: 'mechanic_1', label: 'Mecánica principal y su justificación', placeholder: 'Ej: Sistema XP con 5 niveles de competencia — porque transforma la evaluación de punitiva a acumulativa, alineado con SDT', maxlen: 300, tall: true },
-      { key: 'mechanic_2', label: 'Mecánica de progresión', placeholder: 'Ej: Barra de progreso por misión — visualiza el avance y reduce la ansiedad ante la evaluación', maxlen: 250 },
-      { key: 'mechanic_3', label: 'Mecánica de feedback o social (opcional)', placeholder: 'Ej: Peer review con rúbrica — convierte la evaluación entre pares en oportunidad de aprendizaje colaborativo', maxlen: 250 },
-    ]
-  },
-  {
-    icon: '⚖️', num: 'Paso 7 de 9', title: 'Análisis Ético',
-    desc: 'Examina críticamente tu diseño desde una perspectiva ética.',
-    hint: '💡 <strong>Pregunta clave:</strong> ¿Tu diseño respeta la autonomía del aprendiz? ¿Podría crear presión negativa, ansiedad o exclusión? La gamificación ética hace explícita su lógica y co-crea reglas con los estudiantes.',
-    type: 'fields',
-    fields: [
-      { key: 'ethics_risks', label: 'Posibles riesgos éticos de tu diseño', placeholder: 'Ej: El leaderboard podría desmotivar a quienes van rezagados; el sistema de vidas podría crear ansiedad...', maxlen: 350, tall: true },
-      { key: 'ethics_safeguards', label: 'Salvaguardas éticas que incorporarás', placeholder: 'Ej: Leaderboard de progreso propio (no comparativo), sin penalizaciones, lineamientos de IA co-creados con estudiantes...', maxlen: 350, tall: true },
-    ]
-  },
-  {
-    icon: '📊', num: 'Paso 8 de 9', title: 'Impacto Esperado',
-    desc: 'Define los indicadores con los que medirás el éxito de tu experiencia gamificada.',
-    hint: '💡 <strong>Indicadores medibles:</strong> ¿Cómo sabrás que tu gamificación funcionó? Define indicadores de motivación, participación y aprendizaje que puedas recolectar en tu contexto real.',
-    type: 'fields',
-    fields: [
-      { key: 'impact_motivation', label: 'Indicador de motivación', placeholder: 'Ej: % de estudiantes que completan actividades opcionales (voluntarias)', maxlen: 250 },
-      { key: 'impact_participation', label: 'Indicador de participación', placeholder: 'Ej: Calidad de contribuciones en foros (rúbrica de 3 niveles) vs. semestre anterior', maxlen: 250 },
-      { key: 'impact_learning', label: 'Indicador de aprendizaje', placeholder: 'Ej: % que alcanza nivel 4 (AI Mentor) en el sistema XP al finalizar el curso', maxlen: 250 },
-    ]
-  },
-  {
-    icon: '🏁', num: 'Paso 9 de 9', title: 'Título de tu Experiencia',
-    desc: 'Dale un nombre a tu experiencia gamificada. El título debe capturar la esencia del viaje que propones.',
-    hint: '💡 <strong>Un buen título</strong> evoca el propósito, genera expectativa y puede ser recordado por los estudiantes. Evita títulos genéricos como "Curso Gamificado".',
-    type: 'fields',
-    fields: [
-      { key: 'exp_title', label: 'Título de la experiencia gamificada', placeholder: 'Ej: El Laboratorio de la Motivación Ética / La Forja del Investigador / The Learning Quest', maxlen: 100 },
-      { key: 'exp_tagline', label: 'Tagline (subtítulo)', placeholder: 'Ej: Un viaje de seis misiones hacia el diseño de aprendizajes que transforman', maxlen: 180 },
-    ]
-  },
+const SCENARIOS = [
+  { num:1, title:'El streak de 365 días', context:'Plataforma de idiomas tipo Duolingo', situation:'Una app de aprendizaje de idiomas muestra una racha de 365 días con una llama animada. Cuando el usuario falla un día, la app envía notificaciones de "¡Tu racha está en peligro!" y ofrece "vidas extra" que se pueden comprar. El usuario empieza a sentir ansiedad cuando no puede abrir la app por un viaje.', question:'¿Esta mecánica de racha/streak es un dark pattern o diseño ético?', options:[{letter:'A',text:'Es diseño ético porque motiva la consistencia y el hábito de estudio diario.',correct:false},{letter:'B',text:'Es un dark pattern: crea ansiedad artificial y presiona hacia compras cuando el objetivo debería ser el aprendizaje, no la racha.',correct:true},{letter:'C',text:'Depende del usuario: si le funciona para estudiar, es ético.',correct:false}], feedback_correct:'✓ Correcto. El streak como mecánica puede ser válido, pero cuando genera ansiedad, monetiza el "miedo a perder" y desvía el foco del aprendizaje real hacia la preservación de la racha, se convierte en dark pattern.', feedback_wrong:'No exactamente. La clave no está en si "funciona" para el usuario, sino en si respeta su autonomía y bienestar. Una mecánica que crea ansiedad y presiona compras emocionales está manipulando, no motivando.', reflection:'¿Cómo podrías rediseñar el streak para que apoye la constancia sin generar ansiedad? ¿Qué cambiaría si contara semanas en vez de días?' },
+  { num:2, title:'La tabla de clasificación competitiva', context:'Curso corporativo de ventas', situation:'Un programa de formación en ventas usa un ranking público en tiempo real que muestra el nombre y posición de cada empleado. Los últimos 3 del ranking reciben un email semanal con el asunto "Zona de mejora urgente". Los primeros reciben reconocimiento público en reuniones.', question:'¿Cómo clasificarías este diseño desde una perspectiva ética?', options:[{letter:'A',text:'Es motivador y competitivo, alineado con la cultura de ventas.',correct:false},{letter:'B',text:'Es un dark pattern: el shaming público y la presión negativa deterioran el bienestar psicológico y la colaboración.',correct:true},{letter:'C',text:'Es ético si los empleados pueden optar por no aparecer en el ranking.',correct:false}], feedback_correct:'✓ Correcto. Usar la vergüenza pública y el miedo como palancas motivacionales viola principios básicos del bienestar psicológico. Kim y Werbach (2016) lo identifican como uso manipulador de la presión social.', feedback_wrong:'La opción de "opt-out" puede reducir el daño, pero no elimina el diseño punitivo. El problema de fondo es usar el miedo y la vergüenza como motivadores.', reflection:'¿Cómo podrías rediseñar el leaderboard para promover mejora personal sin comparación punitiva? ¿Qué pasaría si mostrara "progreso propio" en vez de posición relativa?' },
+  { num:3, title:'El aula gamificada con XP', context:'Curso de posgrado — como el que estás viviendo ahora', situation:'Un curso de posgrado reemplaza las notas tradicionales por un sistema de XP (puntos de experiencia). Los estudiantes acumulan XP con cada participación, actividad y contribución. El XP total se convierte en la nota de participación (10%). No hay penalizaciones, solo acumulación positiva.', question:'¿Este diseño es motivación intrínseca o manipulación?', options:[{letter:'A',text:'Es un dark pattern: los puntos siguen siendo una recompensa externa que condiciona la participación.',correct:false},{letter:'B',text:'Es diseño ético: reemplaza la lógica punitiva por acumulación positiva, alinea con SDT y respeta la autonomía del aprendiz.',correct:true},{letter:'C',text:'Ninguno: es solo un cambio cosmético, los puntos son lo mismo que las notas.',correct:false}], feedback_correct:'✓ Correcto. El sistema XP de este laboratorio está diseñado para apoyar la motivación intrínseca: no penaliza, acumula progreso visible, alinea recompensas con competencias reales y hace transparente la lógica de evaluación.', feedback_wrong:'La diferencia entre XP como dark pattern y XP ético está en el diseño: ¿crea ansiedad o confianza? ¿Penaliza o acumula? La lógica de acumulación positiva, alineada a competencias reales, es cualitativamente diferente a las notas punitivas.', reflection:'¿Qué elementos del sistema XP que estás viviendo en este curso te parecen éticamente bien diseñados? ¿Hay algo que cambiarías?' },
+  { num:4, title:'Los badges de LinkedIn Learning', context:'Plataforma de e-learning corporativo', situation:'LinkedIn Learning otorga badges al completar cursos. Estos badges aparecen en el perfil público y pueden ser vistos por reclutadores. Los usuarios empiezan a completar cursos rápidamente, saltándose contenido, solo para obtener el badge y mostrarlo en su perfil.', question:'¿Cuál es el problema de diseño de esta mecánica de badges?', options:[{letter:'A',text:'No hay problema: si completan los cursos, el aprendizaje ocurrirá de alguna forma.',correct:false},{letter:'B',text:'El badge se desacopla del aprendizaje real: motiva la señal (el badge) en vez de la competencia.',correct:true},{letter:'C',text:'Los badges siempre son dark patterns porque son recompensas externas.',correct:false}], feedback_correct:'✓ Correcto. Este es el problema clásico de la gamificación superficial: cuando la recompensa se desacopla de la competencia real que debería representar, los usuarios optimizan para la recompensa, no para el aprendizaje.', feedback_wrong:'Los badges no son inherentemente buenos o malos. El problema aquí es específico: el diseño crea incentivos para "badge hunting" que se desconectan del aprendizaje.', reflection:'¿Cómo redesignarías los badges para que realmente representen competencias? ¿Qué evidencia o criterio debería requerir un badge para ser pedagógicamente válido?' },
+  { num:5, title:'El chatbot motivacional con IA', context:'App de fitness y bienestar', situation:'Una app de fitness usa un chatbot con IA que aprende los patrones del usuario y envía mensajes personalizados. El chatbot adapta el tono según el estado emocional detectado del usuario. No es un humano, pero muchos usuarios no lo saben.', question:'¿Cuál es la consideración ética más importante en este diseño?', options:[{letter:'A',text:'Ninguna: si ayuda al usuario a ejercitarse, el fin justifica el medio.',correct:false},{letter:'B',text:'La transparencia: el usuario debe saber que es una IA, que analiza su estado emocional y cómo se usan esos datos. Sin eso, es manipulación.',correct:true},{letter:'C',text:'El chatbot debería solo enviar datos objetivos, no mensajes motivacionales.',correct:false}], feedback_correct:'✓ Correcto. El diseño ético de IA en gamificación requiere transparencia: ¿sabe el usuario que es una IA? ¿Conoce qué datos analiza? La personalización emocional sin consentimiento informado cruza la línea hacia la manipulación.', feedback_wrong:'El problema no es la motivación en sí, sino la opacidad: usar análisis emocional de IA sin que el usuario lo sepa es manipulación, aunque el resultado sea positivo.', reflection:'¿Qué elementos de transparencia añadirías a este chatbot para hacerlo éticamente sólido?' },
+  { num:6, title:'El sistema de vidas con penalización', context:'Plataforma educativa para niños', situation:'Una plataforma educativa para niños de 8-12 años usa un sistema de "vidas": cada error quita una vida. Al perder todas las vidas, el niño debe esperar 30 minutos para seguir, o los padres pueden comprar "recargas de vidas".', question:'¿Este diseño es ético para un contexto de educación infantil?', options:[{letter:'A',text:'Es ético: enseña a los niños a aceptar consecuencias y a no cometer errores.',correct:false},{letter:'B',text:'No es ético: usa la frustración infantil como palanca de monetización, penaliza el error de aprendizaje y crea presión familiar negativa.',correct:true},{letter:'C',text:'Depende: si los padres pueden controlar el gasto, el sistema puede ser aceptable.',correct:false}], feedback_correct:'✓ Correcto. El sistema usa la frustración de los niños como mecanismo de monetización. El error es parte natural del aprendizaje y penalizarlo con tiempo de espera contradice principios pedagógicos básicos.', feedback_wrong:'El control parental no resuelve el problema de diseño: la mecánica sigue penalizando el error de aprendizaje y convirtiendo la frustración infantil en oportunidad de venta.', reflection:'¿Cómo rediseñarías el feedback de errores en una plataforma infantil? ¿Qué dice la Self-Determination Theory sobre el rol del error en el aprendizaje?' },
 ];
 
-let currentStep = 0;
-const data = {};
-let missionCount = 3;
+let current = 0, answered = [], score = 0;
 
-function renderDots() {
-  const total = STEPS.length;
-  let html = '';
-  STEPS.forEach((s, i) => {
-    if (i > 0) html += `<div class="step-connector ${i <= currentStep ? 'done' : ''}"></div>`;
-    const cls = i < currentStep ? 'done' : i === currentStep ? 'active' : '';
-    html += `<div class="step-dot ${cls}">${i < currentStep ? '✓' : i + 1}</div>`;
-  });
-  document.getElementById('step-dots').innerHTML = html;
-  document.getElementById('step-label').textContent = STEPS[currentStep].num + ' — ' + STEPS[currentStep].title;
-}
+function init() { answered = []; score = 0; current = 0; document.getElementById('final-panel').classList.remove('show'); renderScenario(); updateProgress(); }
 
-function renderStep() {
-  const s = STEPS[currentStep];
-  const isLast = currentStep === STEPS.length - 1;
-  const isFirst = currentStep === 0;
-
-  let bodyHTML = '';
-
-  if (s.type === 'intro') {
-    bodyHTML = `<div class="step-header">
-      <div class="step-num">${s.num}</div>
-      <div class="step-title">${s.icon} ${s.title}</div>
-      <div class="step-desc">${s.desc}</div>
-    </div>
-    <div class="step-hint">${s.hint}</div>
-    <div style="background:var(--forest-light);border-radius:6px;padding:1.25rem;font-size:14px;color:var(--forest);line-height:1.7;">
-      <strong>Lo que vas a diseñar en 9 pasos:</strong><br>
-      El Héroe → El Mundo → El Conflicto → Las Misiones → Las Mecánicas → El Análisis Ético → El Impacto → El Título<br>
-      <span style="font-size:12px;color:var(--forest-mid);font-style:italic;">Al finalizar, podrás descargar tu arco narrativo completo como documento.</span>
-    </div>`;
-  } else if (s.type === 'fields') {
-    const fields = s.fields.map(f => {
-      const val = data[f.key] || '';
-      const count = val.length;
-      if (f.tall) {
-        return `<div class="form-group">
-          <label class="form-label">${f.label} ${f.hint ? `<span>· ${f.hint}</span>` : ''}</label>
-          <textarea id="field-${f.key}" maxlength="${f.maxlen || 400}" onkeyup="saveField('${f.key}', this.value)"
-            placeholder="${f.placeholder}">${val}</textarea>
-          <div class="char-count" id="cc-${f.key}">${count} / ${f.maxlen || 400}</div>
-        </div>`;
-      }
-      return `<div class="form-group">
-        <label class="form-label">${f.label} ${f.hint ? `<span>· ${f.hint}</span>` : ''}</label>
-        <input type="text" id="field-${f.key}" maxlength="${f.maxlen || 200}" value="${val}"
-          placeholder="${f.placeholder}" oninput="saveField('${f.key}', this.value)">
-        <div class="char-count" id="cc-${f.key}">${count} / ${f.maxlen || 200}</div>
-      </div>`;
-    }).join('');
-
-    bodyHTML = `<div class="step-header">
-      <div class="step-num">${s.num}</div>
-      <div class="step-title">${s.icon} ${s.title}</div>
-      <div class="step-desc">${s.desc}</div>
-    </div>
-    <div class="step-hint">${s.hint}</div>
-    ${fields}`;
-  } else if (s.type === 'missions') {
-    let missionRows = '';
-    for (let i = 1; i <= missionCount; i++) {
-      const key = `mission_${i}`;
-      const val = data[key] || '';
-      missionRows += `<div class="mission-row">
-        <div class="mission-num-badge">${i}</div>
-        <textarea id="field-${key}" placeholder="Nombre narrativo + propósito de aprendizaje de la Misión ${i}. Ej: La Chispa — Estudiantes descubren el poder del diseño narrativo y definen su hero persona." maxlength="300" onkeyup="saveField('${key}', this.value)">${val}</textarea>
-      </div>`;
-    }
-    bodyHTML = `<div class="step-header">
-      <div class="step-num">${s.num}</div>
-      <div class="step-title">${s.icon} ${s.title}</div>
-      <div class="step-desc">${s.desc}</div>
-    </div>
-    <div class="step-hint">${s.hint}</div>
-    <div class="missions-builder" id="missions-builder">${missionRows}</div>
-    ${missionCount < 5 ? `<button class="add-mission-btn" style="margin-top:0.75rem;" onclick="addMission()">+ Añadir misión</button>` : ''}`;
-  } else if (s.type === 'summary') {
-    bodyHTML = renderSummary();
+function renderScenario() {
+  const s = SCENARIOS[current], isAnswered = answered[current] !== undefined, userAnswer = answered[current];
+  const optionsHTML = s.options.map((opt, i) => {
+    let cls = 'option-btn';
+    if (isAnswered) { if (opt.correct) cls += ' reveal-correct'; else if (userAnswer === i && !opt.correct) cls += ' selected-wrong'; }
+    return `<button class="${cls}" onclick="${isAnswered ? '' : `answer(${i})`}" ${isAnswered ? 'disabled' : ''}><span class="option-letter">${opt.letter}</span><span class="option-text">${opt.text}</span></button>`;
+  }).join('');
+  let feedbackHTML = '';
+  if (isAnswered) {
+    const correct = s.options[userAnswer].correct;
+    feedbackHTML = `<div class="feedback-reveal show ${correct ? 'correct' : 'wrong'}"><div class="feedback-reveal-title">${correct ? s.feedback_correct : s.feedback_wrong}</div><div class="reflection-prompt">💭 Para reflexionar: ${s.reflection}</div></div>`;
   }
-
-  if (s.type !== 'summary') {
-    bodyHTML += `<div class="nav-controls">
-      <button class="btn-nav" onclick="prevStep()" ${isFirst ? 'disabled' : ''}>← Anterior</button>
-      <button class="btn-nav primary" onclick="nextStep()">${isLast ? 'Ver mi arco narrativo →' : 'Siguiente →'}</button>
-    </div>`;
-  }
-
-  document.getElementById('wizard-body').innerHTML = bodyHTML;
-  renderDots();
-}
-
-function saveField(key, val) {
-  data[key] = val;
-  const cc = document.getElementById(`cc-${key}`);
-  const maxlenMap = {};
-  STEPS.forEach(s => { if (s.fields) s.fields.forEach(f => { maxlenMap[f.key] = f.maxlen || 400; }); });
-  if (cc) cc.textContent = `${val.length} / ${maxlenMap[key] || 400}`;
-}
-
-function addMission() {
-  if (missionCount < 5) {
-    missionCount++;
-    renderStep();
-  }
-}
-
-function prevStep() { if (currentStep > 0) { currentStep--; renderStep(); window.scrollTo(0,0); } }
-
-function nextStep() {
-  if (currentStep < STEPS.length - 1) {
-    currentStep++;
-    renderStep();
-    window.scrollTo(0, 0);
-  } else {
-    showSummary();
-  }
-}
-
-function showSummary() {
-  document.getElementById('wizard-body').innerHTML = renderSummaryHTML();
-  document.getElementById('step-dots').parentElement.style.display = 'none';
-}
-
-function renderSummaryHTML() {
-  const title = data['exp_title'] || 'Mi Experiencia Gamificada';
-  const tagline = data['exp_tagline'] || '';
-
-  const missions = [];
-  for (let i = 1; i <= missionCount; i++) {
-    if (data[`mission_${i}`]) missions.push(data[`mission_${i}`]);
-  }
-
-  return `<div class="summary-card">
-    <div class="summary-header">
-      <div style="font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:8px;">Arco Narrativo Gamificado · TA1</div>
-      <h2>${title}</h2>
-      ${tagline ? `<div class="title-out">${tagline}</div>` : ''}
-    </div>
-    <div class="summary-body">
-
-      <div class="summary-section">
-        <div class="summary-section-header">🦸 El Héroe</div>
-        <div class="summary-section-body">
-          ${field('Perfil del héroe/heroína', data['hero_who'])}
-          ${field('Conocimientos de partida', data['hero_knows'])}
-          ${field('Frustraciones y barreras', data['hero_struggles'])}
-        </div>
-      </div>
-
-      <div class="summary-section">
-        <div class="summary-section-header">🌍 El Mundo y el Conflicto</div>
-        <div class="summary-section-body">
-          ${field('Contexto', data['world_context'])}
-          ${field('Situación actual', data['world_current'])}
-          ${field('Conflicto central', data['conflict'])}
-          ${field('Transformación prometida', data['transformation'])}
-          ${field('Propuesta de valor', data['value_prop'])}
-        </div>
-      </div>
-
-      <div class="summary-section">
-        <div class="summary-section-header">🗺️ Estructura de Misiones</div>
-        <div class="summary-section-body">
-          <div class="summary-missions">
-            ${missions.map((m,i) => `<div class="summary-mission"><div class="summary-mission-badge">${i+1}</div><div class="summary-mission-text">${m}</div></div>`).join('')}
-          </div>
-        </div>
-      </div>
-
-      <div class="summary-section">
-        <div class="summary-section-header">⚡ Mecánicas Clave</div>
-        <div class="summary-section-body">
-          ${field('Mecánica principal', data['mechanic_1'])}
-          ${field('Mecánica de progresión', data['mechanic_2'])}
-          ${data['mechanic_3'] ? field('Mecánica de feedback/social', data['mechanic_3']) : ''}
-        </div>
-      </div>
-
-      <div class="summary-section">
-        <div class="summary-section-header">⚖️ Análisis Ético</div>
-        <div class="summary-section-body">
-          ${field('Riesgos éticos identificados', data['ethics_risks'])}
-          ${field('Salvaguardas éticas', data['ethics_safeguards'])}
-        </div>
-      </div>
-
-      <div class="summary-section">
-        <div class="summary-section-header">📊 Impacto Esperado</div>
-        <div class="summary-section-body">
-          ${field('Indicador de motivación', data['impact_motivation'])}
-          ${field('Indicador de participación', data['impact_participation'])}
-          ${field('Indicador de aprendizaje', data['impact_learning'])}
-        </div>
-      </div>
-
-      <div class="summary-actions">
-        <button class="btn-download-sum" onclick="downloadSummary()">⬇ Descargar como HTML</button>
-        <button class="btn-print" onclick="window.print()">🖨 Imprimir / PDF</button>
-        <button class="btn-restart" onclick="restartWizard()">↺ Editar desde el inicio</button>
-      </div>
-    </div>
+  document.getElementById('scenario-container').innerHTML = `<div class="scenario-card">
+    <div class="scenario-card-header"><div class="scenario-num">Escenario ${s.num} de ${SCENARIOS.length}</div><div class="scenario-title">${s.title}</div><div class="scenario-context">📍 ${s.context}</div></div>
+    <div class="scenario-card-body"><div class="scenario-situation">${s.situation}</div><div class="question">${s.question}</div><div class="options-grid">${optionsHTML}</div>${feedbackHTML}</div>
+  </div>
+  <div class="nav-controls">
+    <button class="btn-nav" onclick="prev()" ${current === 0 ? 'disabled' : ''}>← Anterior</button>
+    <span style="font-size:13px;color:var(--ink-soft);">${current + 1} / ${SCENARIOS.length}</span>
+    ${isAnswered ? (current < SCENARIOS.length - 1 ? `<button class="btn-nav primary" onclick="next()">Siguiente →</button>` : `<button class="btn-nav primary" onclick="finish()">Ver resultados →</button>`) : `<button class="btn-nav" disabled>Responde para continuar</button>`}
   </div>`;
 }
 
-function field(label, value) {
-  if (!value) return '';
-  return `<div class="summary-field">
-    <div class="summary-field-label">${label}</div>
-    <div class="summary-field-value">${value}</div>
-  </div>`;
-}
-
-function downloadSummary() {
-  const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Arco Narrativo — ${data['exp_title'] || 'Sin título'}</title>
-<style>body{font-family:Georgia,serif;max-width:700px;margin:40px auto;padding:0 2rem;color:#1a1a1a;line-height:1.7}h1{font-size:2rem;margin-bottom:8px}h2{font-size:1.1rem;margin:2rem 0 0.5rem;color:#533477}p,div{margin-bottom:0.5rem}label{font-size:11px;color:#7a7979;text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:2px}.section{border-left:3px solid #533477;padding-left:1rem;margin-bottom:1.5rem}.mission{display:flex;gap:10px;margin-bottom:6px}.mn{width:24px;height:24px;border-radius:50%;background:#533477;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:2px}</style>
-</head><body>
-<h1>${data['exp_title'] || 'Mi Experiencia Gamificada'}</h1>
-<p style="color:#7a7979;font-style:italic">${data['exp_tagline'] || ''}</p>
-<p style="font-size:12px;color:#aaa">Arco Narrativo Gamificado · TA1 · Ethics Motivation Lab · EPG UPC</p>
-<hr style="margin:1.5rem 0;border:none;border-top:1px solid #eee">
-<h2>El Héroe</h2>
-<div class="section">
-  <label>Perfil</label><p>${data['hero_who'] || '—'}</p>
-  <label>Conocimientos de partida</label><p>${data['hero_knows'] || '—'}</p>
-  <label>Frustraciones y barreras</label><p>${data['hero_struggles'] || '—'}</p>
-</div>
-<h2>El Mundo y el Conflicto</h2>
-<div class="section">
-  <label>Contexto</label><p>${data['world_context'] || '—'}</p>
-  <label>Situación actual</label><p>${data['world_current'] || '—'}</p>
-  <label>Conflicto central</label><p>${data['conflict'] || '—'}</p>
-  <label>Transformación</label><p>${data['transformation'] || '—'}</p>
-  <label>Propuesta de valor</label><p>${data['value_prop'] || '—'}</p>
-</div>
-<h2>Misiones</h2>
-<div class="section">
-${Array.from({length:missionCount},(_,i)=>data[`mission_${i+1}`]?`<div class="mission"><div class="mn">${i+1}</div><div>${data[`mission_${i+1}`]}</div></div>`:'').join('')}
-</div>
-<h2>Mecánicas</h2>
-<div class="section">
-  <label>Principal</label><p>${data['mechanic_1'] || '—'}</p>
-  <label>Progresión</label><p>${data['mechanic_2'] || '—'}</p>
-  ${data['mechanic_3']?`<label>Feedback/Social</label><p>${data['mechanic_3']}</p>`:''}
-</div>
-<h2>Análisis Ético</h2>
-<div class="section">
-  <label>Riesgos</label><p>${data['ethics_risks'] || '—'}</p>
-  <label>Salvaguardas</label><p>${data['ethics_safeguards'] || '—'}</p>
-</div>
-<h2>Impacto Esperado</h2>
-<div class="section">
-  <label>Motivación</label><p>${data['impact_motivation'] || '—'}</p>
-  <label>Participación</label><p>${data['impact_participation'] || '—'}</p>
-  <label>Aprendizaje</label><p>${data['impact_learning'] || '—'}</p>
-</div>
-</body></html>`;
-  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `arco-narrativo-${(data['exp_title']||'mi-experiencia').toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'')}.html`;
-  a.click();
-}
-
-function restartWizard() {
-  currentStep = 0;
-  document.getElementById('step-dots').parentElement.style.display = '';
-  renderStep();
-  window.scrollTo(0, 0);
-}
-
-function downloadHTML() {
-  const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html;charset=utf-8' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'mision2-constructor-arco-narrativo.html';
-  a.click();
-}
-
-renderStep();
+function answer(optIdx) { answered[current] = optIdx; if (SCENARIOS[current].options[optIdx].correct) score++; renderScenario(); updateProgress(); }
+function updateProgress() { const done = answered.filter(a => a !== undefined).length; document.getElementById('progress-fill').style.width = `${(done/SCENARIOS.length)*100}%`; document.getElementById('progress-count').textContent = `${done} / ${SCENARIOS.length}`; }
+function prev() { if (current > 0) { current--; renderScenario(); } }
+function next() { if (current < SCENARIOS.length - 1) { current++; renderScenario(); } }
+function finish() { document.getElementById('scenario-container').innerHTML = ''; document.getElementById('final-panel').classList.add('show'); document.getElementById('final-score-num').textContent = `${score}/6`; }
+function restart() { init(); }
+function downloadHTML() { const blob = new Blob([document.documentElement.outerHTML],{type:'text/html;charset=utf-8'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download='mision1-dilemas-eticos.html'; a.click(); }
+init();
 </script>
 </body>
 </html>
