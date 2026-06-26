@@ -3,278 +3,1439 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Activity Library · Ethics Motivation Lab</title>
+<title>Ethics Motivation Lab · EPG UPC</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --forest: #533477;
-  --forest-mid: #6b45a0;
-  --forest-light: #f0eaf8;
-  --gold: #6AC7DC;
-  --gold-light: #e8f7fa;
-  --ink: #1a1a1a;
-  --ink-mid: #444444;
-  --ink-soft: #7a7979;
-  --paper: #fafafa;
-  --white: #ffffff;
-  --border: rgba(83,52,119,0.12);
-  --radius: 4px;
-}
-body { font-family: 'Inter', sans-serif; background: var(--paper); color: var(--ink); line-height: 1.6; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-nav {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(250,250,250,0.95); backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--border);
-  padding: 0 2rem; display: flex; align-items: center;
-  justify-content: space-between; height: 56px;
-}
-.nav-logo { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--forest); text-decoration: none; letter-spacing: -0.02em; }
-.nav-logo span { color: var(--ink-soft); font-weight: 400; }
-.nav-back { font-size: 14px; color: var(--ink-mid); text-decoration: none; transition: color 0.2s; }
-.nav-back:hover { color: var(--forest); }
-.nav-badge {
-  font-size: 11px; background: var(--gold-light);
-  color: #1a6e7e; border: 1px solid var(--gold);
-  border-radius: 100px; padding: 3px 10px; font-weight: 500;
-}
+  :root {
+    --forest: #533477;
+    --forest-mid: #6b45a0;
+    --forest-light: #f0eaf8;
+    --gold: #6AC7DC;
+    --gold-light: #e8f7fa;
+    --ink: #1a1a1a;
+    --ink-mid: #444444;
+    --ink-soft: #7a7979;
+    --paper: #fafafa;
+    --white: #ffffff;
+    --border: rgba(83,52,119,0.12);
+    --radius: 4px;
+  }
 
-.page-header {
-  background: var(--forest);
-  padding: 4rem;
-  position: relative;
-  overflow: hidden;
-}
-.page-header::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(106,199,220,0.12) 0%, transparent 60%);
-}
-.page-header-inner { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; }
-.page-header h1 {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(2rem, 3.5vw, 2.8rem); font-weight: 800;
-  color: white; letter-spacing: -0.04em; margin-bottom: 0.5rem;
-}
-.page-header .es { font-size: 1rem; color: rgba(255,255,255,0.4); font-style: italic; margin-bottom: 1rem; }
-.page-header p { font-size: 15px; color: rgba(255,255,255,0.65); max-width: 560px; }
+  html { scroll-behavior: smooth; }
 
-.embed-callout { max-width: 1200px; margin: 2.5rem auto; padding: 0 4rem; }
-.embed-box {
-  background: var(--gold-light);
-  border: 1px solid rgba(106,199,220,0.5);
-  border-radius: 6px; padding: 1.25rem 1.5rem;
-  display: flex; align-items: flex-start; gap: 1rem;
-}
-.embed-icon { font-size: 1.25rem; flex-shrink: 0; margin-top: 2px; }
-.embed-text { font-size: 14px; color: var(--ink-mid); line-height: 1.6; }
-.embed-text strong { color: var(--ink); }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+  }
 
-.library { max-width: 1200px; margin: 0 auto; padding: 0 4rem 5rem; }
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(250,249,246,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
 
-.mission-group { margin-bottom: 3rem; }
-.mission-label {
-  font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--forest); display: flex; align-items: center; gap: 8px;
-  margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);
-}
-.mission-label::before { content: ''; display: block; width: 16px; height: 1.5px; background: var(--forest); }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--forest);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
 
-.activity-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .nav-logo span {
+    color: var(--ink-soft);
+    font-weight: 400;
+  }
 
-.act-card {
-  border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
-  display: flex; flex-direction: column; text-decoration: none; color: inherit;
-  transition: border-color 0.2s, transform 0.15s; background: white;
-}
-.act-card:hover { border-color: var(--forest); transform: translateY(-2px); }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
 
-.act-header { background: var(--forest); padding: 1.25rem; position: relative; }
-.act-type-pill {
-  position: absolute; top: 0.75rem; right: 0.75rem;
-  font-size: 10px; padding: 2px 8px; border-radius: 100px;
-  background: rgba(106,199,220,0.2); border: 1px solid rgba(106,199,220,0.5);
-  color: var(--gold); font-weight: 500;
-}
-.act-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: white; line-height: 1.3; margin-bottom: 3px; }
-.act-title-es { font-size: 11px; color: rgba(255,255,255,0.4); font-style: italic; }
+  .nav-links a {
+    font-size: 14px;
+    color: var(--ink-mid);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
 
-.act-body { padding: 1rem 1.25rem; flex: 1; display: flex; flex-direction: column; }
-.act-desc { font-size: 13px; color: var(--ink-mid); line-height: 1.6; margin-bottom: auto; }
-.act-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
-.act-tag { font-size: 11px; background: var(--forest-light); color: var(--forest); padding: 2px 8px; border-radius: 100px; font-weight: 500; }
-.act-link { font-size: 13px; font-weight: 500; color: var(--forest); }
+  .nav-links a:hover { color: var(--forest); }
 
-.coming-soon { opacity: 0.5; cursor: default; }
-.coming-soon:hover { transform: none; border-color: var(--border); }
-.coming-badge { font-size: 10px; background: var(--border); color: var(--ink-soft); padding: 2px 8px; border-radius: 100px; font-weight: 500; }
-.coming-soon .act-header { background: #6b45a0; }
+  .nav-badge {
+    font-size: 11px;
+    background: var(--gold-light);
+    color: #7a5c1a;
+    border: 1px solid var(--gold);
+    border-radius: 100px;
+    padding: 3px 10px;
+    font-weight: 500;
+  }
 
-footer {
-  background: var(--ink); color: rgba(255,255,255,0.5);
-  padding: 2.5rem 4rem; display: flex; justify-content: space-between;
-  align-items: center; flex-wrap: wrap; gap: 1rem;
-}
-.footer-brand { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: white; }
-.footer-meta { font-size: 13px; line-height: 1.6; text-align: right; }
-.footer-author { color: rgba(255,255,255,0.7); font-weight: 500; }
+  /* HERO */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 88vh;
+    max-height: 900px;
+  }
 
-@media (max-width: 900px) {
-  .page-header { padding: 3rem 2rem; }
-  .library { padding: 0 2rem 3rem; }
-  .embed-callout { padding: 0 2rem; }
-  .activity-grid { grid-template-columns: 1fr 1fr; }
-  footer { padding: 2rem; flex-direction: column; text-align: center; }
-  .footer-meta { text-align: center; }
-}
-@media (max-width: 600px) {
-  .activity-grid { grid-template-columns: 1fr; }
-  nav { padding: 0 1rem; }
-}
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem 3rem 5rem 4rem;
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 2rem;
+  }
+
+  .hero-eyebrow-line {
+    width: 32px;
+    height: 2px;
+    background: var(--gold);
+  }
+
+  .hero-eyebrow-text {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .hero-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.6rem, 4vw, 3.8rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+  }
+
+  .hero-title-em {
+    color: var(--forest);
+    font-style: italic;
+  }
+
+  .hero-subtitle-es {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+    font-weight: 400;
+    color: var(--ink-soft);
+    letter-spacing: -0.02em;
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+
+  .hero-desc {
+    font-size: 16px;
+    color: var(--ink-mid);
+    max-width: 480px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--forest);
+    color: white;
+    padding: 13px 24px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .btn-primary:hover { background: var(--forest-mid); }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--forest);
+    padding: 13px 24px;
+    border-radius: var(--radius);
+    border: 1.5px solid var(--forest);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover {
+    background: var(--forest-light);
+  }
+
+  .hero-visual {
+    background: var(--forest);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    padding: 3rem;
+  }
+
+  .hero-visual-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(200,168,75,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 80% 80% at 20% 80%, rgba(45,107,86,0.5) 0%, transparent 60%);
+  }
+
+  .hero-stats {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .hero-stat {
+    background: rgba(255,255,255,0.05);
+    padding: 1.5rem;
+  }
+
+  .hero-stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--gold);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .hero-stat-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+
+  .hero-award {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    z-index: 2;
+    background: rgba(200,168,75,0.15);
+    border: 1px solid rgba(200,168,75,0.4);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    text-align: center;
+  }
+
+  .hero-award-icon {
+    font-size: 1.4rem;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .hero-award-text {
+    font-size: 10px;
+    color: var(--gold);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+
+  /* SECTION COMMON */
+  section {
+    padding: 5rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    margin-bottom: 3rem;
+  }
+
+  .section-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--forest);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-eyebrow::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 1.5px;
+    background: var(--forest);
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 2.8vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    line-height: 1.15;
+  }
+
+  .section-subtitle {
+    font-size: 16px;
+    color: var(--ink-soft);
+    margin-top: 0.75rem;
+    font-style: italic;
+  }
+
+  .full-bleed {
+    max-width: none;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 4rem;
+  }
+
+  /* PRINCIPLES */
+  #principles {
+    border-top: 1px solid var(--border);
+  }
+
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .principle {
+    padding: 2rem;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .principle:nth-child(3n) { border-right: none; }
+  .principle:nth-last-child(-n+3) { border-bottom: none; }
+
+  .principle-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--forest-light);
+    line-height: 1;
+    margin-bottom: 0.75rem;
+  }
+
+  .principle-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+
+  .principle-title-es {
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-bottom: 0.75rem;
+  }
+
+  .principle-desc {
+    font-size: 13px;
+    color: var(--ink-mid);
+    line-height: 1.6;
+  }
+
+  /* MISSIONS */
+  #missions {
+    background: var(--forest);
+    border-top: none;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  #missions .section-eyebrow { color: var(--gold); }
+  #missions .section-eyebrow::before { background: var(--gold); }
+  #missions .section-title { color: white; }
+  #missions .section-subtitle { color: rgba(255,255,255,0.5); }
+
+  .missions-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 2.5rem;
+  }
+
+  .mission-card {
+    background: rgba(255,255,255,0.04);
+    padding: 1.5rem 1.25rem;
+    transition: background 0.2s;
+  }
+
+  .mission-card:hover {
+    background: rgba(255,255,255,0.08);
+  }
+
+  .mission-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: rgba(200,168,75,0.3);
+    line-height: 1;
+    margin-bottom: 0.75rem;
+  }
+
+  .mission-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: white;
+    margin-bottom: 4px;
+    line-height: 1.35;
+  }
+
+  .mission-title-es {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    font-style: italic;
+    margin-bottom: 0.75rem;
+  }
+
+  .mission-desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+  }
+
+  .mission-badge {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 100px;
+    background: rgba(200,168,75,0.15);
+    border: 1px solid rgba(200,168,75,0.35);
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  /* XP SYSTEM */
+  #xp {
+    border-top: 1px solid var(--border);
+  }
+
+  .xp-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .xp-levels {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .xp-level {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .xp-level:last-child { border-bottom: none; }
+
+  .xp-level:hover { background: var(--forest-light); }
+
+  .xp-range {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--forest);
+    letter-spacing: -0.02em;
+  }
+
+  .xp-title-wrap {}
+
+  .xp-title-en {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .xp-title-es {
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  .xp-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .dot-1 { background: #c9b8e8; }
+  .dot-2 { background: #a080cc; }
+  .dot-3 { background: #6AC7DC; }
+  .dot-4 { background: #7049b0; }
+  .dot-5 { background: #533477; }
+
+  .xp-right {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .xp-sources {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .xp-source {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.875rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .xp-source:last-child { border-bottom: none; }
+
+  .xp-source-label {
+    font-size: 14px;
+    color: var(--ink-mid);
+  }
+
+  .xp-source-label span {
+    display: block;
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+
+  .xp-source-pts {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--forest);
+  }
+
+  .xp-total {
+    background: var(--forest);
+    color: white;
+    border-radius: 6px;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .xp-total-label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .xp-total-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--gold);
+  }
+
+  /* ACHIEVEMENTS */
+  #achievements {
+    border-top: 1px solid var(--border);
+    background: var(--gold-light);
+  }
+
+  .achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+
+  .achievement-card {
+    background: white;
+    border: 1px solid rgba(200,168,75,0.25);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .achievement-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  }
+
+  .achievement-card:nth-child(1)::before { background: #c9b8e8; }
+  .achievement-card:nth-child(2)::before { background: #a080cc; }
+  .achievement-card:nth-child(3)::before { background: #7049b0; }
+  .achievement-card:nth-child(4)::before { background: var(--forest); }
+
+  .achievement-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    background: var(--forest-light);
+  }
+
+  .achievement-tier {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+  }
+
+  .achievement-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+
+  .achievement-title-es {
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-bottom: 0.75rem;
+  }
+
+  .achievement-pct {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--forest);
+    line-height: 1;
+  }
+
+  .achievement-pct-label {
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+
+  /* ACTIVITIES */
+  #activities {
+    border-top: 1px solid var(--border);
+  }
+
+  .activities-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    margin-bottom: 3rem;
+  }
+
+  .activities-desc {
+    font-size: 16px;
+    color: var(--ink-mid);
+    line-height: 1.7;
+  }
+
+  .how-to-embed {
+    background: var(--ink);
+    color: rgba(255,255,255,0.85);
+    border-radius: 6px;
+    padding: 1.5rem;
+  }
+
+  .how-to-embed h4 {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+
+  .how-to-embed ol {
+    padding-left: 1.25rem;
+    font-size: 13px;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .activities-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .activity-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+
+  .activity-card:hover {
+    border-color: var(--forest);
+    transform: translateY(-2px);
+  }
+
+  .activity-card-header {
+    background: var(--forest);
+    padding: 1.5rem;
+    position: relative;
+  }
+
+  .activity-mission-tag {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 6px;
+  }
+
+  .activity-card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 3px;
+  }
+
+  .activity-card-title-es {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    font-style: italic;
+  }
+
+  .activity-card-type {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(200,168,75,0.25);
+    border: 1px solid rgba(200,168,75,0.4);
+    color: var(--gold);
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 100px;
+    font-weight: 500;
+  }
+
+  .activity-card-body {
+    padding: 1.25rem;
+    background: white;
+  }
+
+  .activity-card-desc {
+    font-size: 13px;
+    color: var(--ink-mid);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .activity-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    padding-top: 0.75rem;
+  }
+
+  .activity-tag {
+    font-size: 11px;
+    background: var(--forest-light);
+    color: var(--forest);
+    padding: 2px 8px;
+    border-radius: 100px;
+    font-weight: 500;
+  }
+
+  .activity-arrow {
+    font-size: 18px;
+    color: var(--forest);
+  }
+
+  /* REPLICATION */
+  #replication {
+    background: var(--forest);
+    border-top: none;
+  }
+
+  #replication .section-eyebrow { color: var(--gold); }
+  #replication .section-eyebrow::before { background: var(--gold); }
+  #replication .section-title { color: white; }
+  #replication .section-subtitle { color: rgba(255,255,255,0.5); }
+
+  .replication-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+
+  .rep-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 1.5rem;
+  }
+
+  .rep-card-icon {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+
+  .rep-card-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+    margin-bottom: 4px;
+  }
+
+  .rep-card-title-es {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    font-style: italic;
+    margin-bottom: 0.75rem;
+  }
+
+  .rep-card-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.6;
+  }
+
+  .rep-targets {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .rep-targets-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+  }
+
+  .rep-target-pill {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.7);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 100px;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.5);
+    padding: 2.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-brand {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+  }
+
+  .footer-meta {
+    font-size: 13px;
+    line-height: 1.6;
+    text-align: right;
+  }
+
+  .footer-author {
+    color: rgba(255,255,255,0.7);
+    font-weight: 500;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-visual { min-height: 300px; }
+    .hero-content { padding: 3rem 2rem; }
+    .principles-grid { grid-template-columns: 1fr 1fr; }
+    .missions-grid { grid-template-columns: repeat(3, 1fr); }
+    .xp-layout { grid-template-columns: 1fr; }
+    .achievements-grid { grid-template-columns: 1fr 1fr; }
+    .activities-intro { grid-template-columns: 1fr; }
+    .activities-cards { grid-template-columns: 1fr 1fr; }
+    .replication-grid { grid-template-columns: 1fr 1fr; }
+    section { padding: 3rem 2rem; }
+    footer { padding: 2rem; flex-direction: column; text-align: center; }
+    .footer-meta { text-align: center; }
+    .inner { padding: 0 2rem; }
+  }
+
+  @media (max-width: 600px) {
+    .principles-grid { grid-template-columns: 1fr; }
+    .missions-grid { grid-template-columns: 1fr 1fr; }
+    .achievements-grid { grid-template-columns: 1fr; }
+    .activities-cards { grid-template-columns: 1fr; }
+    .replication-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="../index.html" class="nav-logo">Ethics Motivation <span>Lab</span></a>
-  <a href="../index.html" class="nav-back">← Back to framework</a>
+  <a href="#" class="nav-logo">Ethics Motivation <span>Lab</span></a>
+  <ul class="nav-links">
+    <li><a href="#principles">Framework</a></li>
+    <li><a href="#missions">Missions</a></li>
+    <li><a href="#xp">XP System</a></li>
+    <li><a href="#activities">Activities</a></li>
+    <li><a href="#replication">Replication</a></li>
+  </ul>
   <span class="nav-badge">🏆 Bb Catalyst 2026</span>
 </nav>
 
-<div class="page-header">
-  <div class="page-header-inner">
-    <h1>Activity Library</h1>
-    <p class="es">Biblioteca de actividades interactivas</p>
-    <p>Interactive HTML activities created with Anthropic Claude, designed to embed directly inside Blackboard Ultra. Single-file, no external dependencies, no plugins.</p>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span class="hero-eyebrow-text">EPG UPC</span>
+    </div>
+    <h1 class="hero-title">
+      Ethics<br>
+      <span class="hero-title-em">Motivation</span><br>
+      Lab
+    </h1>
+    <p class="hero-subtitle-es">Laboratorio de la Motivación Ética</p>
+    <p class="hero-desc">
+      A replicable gamified narrative framework for graduate education in Blackboard Ultra.
+      A course about gamification that <em>is</em> the gamified experience.
+    </p>
+    <div class="hero-actions">
+      <a href="#activities" class="btn-primary">Browse activities →</a>
+      <a href="#replication" class="btn-secondary">Replication guide</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-visual-bg"></div>
+
+    <div class="hero-award">
+      <span class="hero-award-icon">🏆</span>
+      <div class="hero-award-text">Blackboard<br>Catalyst Award<br>Teaching Excellence<br>2026</div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">6</div>
+        <div class="hero-stat-label">Missions<br>Misiones</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">720</div>
+        <div class="hero-stat-label">Max XP across<br>6 missions</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">4</div>
+        <div class="hero-stat-label">Achievement tiers<br>Niveles de logro</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">2×</div>
+        <div class="hero-stat-label">Dual-layer<br>XP system</div>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="embed-callout">
-  <div class="embed-box">
-    <span class="embed-icon">📋</span>
-    <div class="embed-text">
-      <strong>How to embed in Blackboard Ultra:</strong> Open any activity → click "Download HTML" → In Blackboard Ultra, create a Document → click <strong>+ → HTML</strong> → paste the full code → save. Students interact directly inside the LMS — no logins, no external platforms.
+<!-- PRINCIPLES -->
+<section id="principles">
+  <div class="section-header">
+    <div class="section-eyebrow">Design principles · Principios de diseño</div>
+    <h2 class="section-title">Six principles that ground the framework</h2>
+    <p class="section-subtitle">Seis principios que anclan el marco</p>
+  </div>
+
+  <div class="principles-grid">
+    <div class="principle">
+      <div class="principle-num">01</div>
+      <div class="principle-title">Pedagogical coherence</div>
+      <div class="principle-title-es">Coherencia pedagógica</div>
+      <div class="principle-desc">The medium embodies the message. A course about gamification must itself be a live gamified experience.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">02</div>
+      <div class="principle-title">Ethical grounding</div>
+      <div class="principle-title-es">Anclaje ético</div>
+      <div class="principle-desc">Every gamification mechanic carries values. Each design choice is made explicit and examined critically.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">03</div>
+      <div class="principle-title">Intrinsic motivation</div>
+      <div class="principle-title-es">Motivación intrínseca</div>
+      <div class="principle-desc">Growth logic replaces punitive grading. XP accumulation reflects learning, not compliance.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">04</div>
+      <div class="principle-title">Dual-layer evaluation</div>
+      <div class="principle-title-es">Evaluación de doble capa</div>
+      <div class="principle-desc">Competency progression tracks mastery; participation monitoring guides real-time instructor support.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">05</div>
+      <div class="principle-title">AI as inquiry object</div>
+      <div class="principle-title-es">IA como objeto de indagación</div>
+      <div class="principle-desc">AI is both a pedagogical tool and a subject of critical ethical analysis throughout the course.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">06</div>
+      <div class="principle-title">Full Blackboard Ultra integration</div>
+      <div class="principle-title-es">Integración total en Blackboard Ultra</div>
+      <div class="principle-desc">Native tools as infrastructure. No external platforms, no plugins — everything lives inside the LMS.</div>
     </div>
   </div>
-</div>
+</section>
 
-<div class="library">
+<!-- MISSIONS -->
+<section id="missions" class="full-bleed" style="padding: 5rem 0;">
+  <div class="inner">
+    <div class="section-header">
+      <div class="section-eyebrow">Six missions · Seis misiones</div>
+      <h2 class="section-title">Each mission frames a core competency as an ethical challenge</h2>
+      <p class="section-subtitle">Cada misión enmarca una competencia central como un desafío ético</p>
+    </div>
+  </div>
 
-  <div class="mission-group">
-    <div class="mission-label">Mission 1 · El Origen del Juego — Foundations &amp; ethics of gamification</div>
-    <div class="activity-grid">
-      <a href="ethics-dilemma-cards.html" class="act-card">
-        <div class="act-header">
-          <span class="act-type-pill">Reflection</span>
-          <div class="act-title">Ethics Dilemma Cards</div>
-          <div class="act-title-es">Cartas de Dilemas Éticos</div>
-        </div>
-        <div class="act-body">
-          <div class="act-desc">6 real gamification scenarios. Students identify dark patterns vs. ethical design and reflect on the values each mechanic carries.</div>
-          <div class="act-meta">
-            <span class="act-tag">6 scenarios</span>
-            <span class="act-link">Open →</span>
+  <div class="inner">
+    <div class="missions-grid">
+      <div class="mission-card">
+        <div class="mission-num">1</div>
+        <div class="mission-title">The Origin of the Game</div>
+        <div class="mission-title-es">El Origen del Juego</div>
+        <div class="mission-desc">Foundations and ethics of gamification. Students encounter the ethical stakes of design from day one.</div>
+        <span class="mission-badge">PA — Gamified participation</span>
+      </div>
+      <div class="mission-card">
+        <div class="mission-num">2</div>
+        <div class="mission-title">The Hero's Forge</div>
+        <div class="mission-title-es">La Forja del Héroe</div>
+        <div class="mission-desc">Narrative design and game mechanics. Students build their first gamified experience using the Hero's Journey.</div>
+        <span class="mission-badge">TA1 — 20%</span>
+      </div>
+      <div class="mission-card">
+        <div class="mission-num">3</div>
+        <div class="mission-title">The Experience Lab</div>
+        <div class="mission-title-es">El Laboratorio de Experiencias</div>
+        <div class="mission-desc">Creation of interactive activities. Students design and test H5P-based learning artifacts.</div>
+        <span class="mission-badge">PA — Accumulated XP</span>
+      </div>
+      <div class="mission-card">
+        <div class="mission-num">4</div>
+        <div class="mission-title">AI at the Service of Learning</div>
+        <div class="mission-title-es">IA al Servicio del Juego</div>
+        <div class="mission-desc">Personalization and learning analytics. Ethical AI integration as a design tool and object of inquiry.</div>
+        <span class="mission-badge">TA2 — 30%</span>
+      </div>
+      <div class="mission-card">
+        <div class="mission-num">5</div>
+        <div class="mission-title">The Impact Map</div>
+        <div class="mission-title-es">El Mapa del Impacto</div>
+        <div class="mission-desc">Gamified evaluation and metrics. Students design assessment systems for their own courses.</div>
+        <span class="mission-badge">PA — Accumulated XP</span>
+      </div>
+      <div class="mission-card">
+        <div class="mission-num">6</div>
+        <div class="mission-title">The Summit</div>
+        <div class="mission-title-es">La Cumbre del Juego</div>
+        <div class="mission-desc">Final project presentation. A complete gamified learning experience, ready for institutional adoption.</div>
+        <span class="mission-badge">TF — 40%</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- XP SYSTEM -->
+<section id="xp">
+  <div class="section-header">
+    <div class="section-eyebrow">XP System · Sistema XP de doble capa</div>
+    <h2 class="section-title">Two complementary progression systems</h2>
+    <p class="section-subtitle">Dos sistemas XP complementarios operando simultáneamente</p>
+  </div>
+
+  <div class="xp-layout">
+    <div>
+      <p style="font-size:13px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:0.75rem;">System A — Competency levels</p>
+      <div class="xp-levels">
+        <div class="xp-level">
+          <div class="xp-range">0–100 XP</div>
+          <div class="xp-title-wrap">
+            <div class="xp-title-en">Explorer</div>
+            <div class="xp-title-es">Explorador/a</div>
           </div>
+          <div class="xp-dot dot-1"></div>
         </div>
-      </a>
-      <div class="act-card coming-soon">
-        <div class="act-header">
-          <span class="act-type-pill">Quiz</span>
-          <div class="act-title">Motivation Model Matcher</div>
-          <div class="act-title-es">Identificador de Modelos Motivacionales</div>
+        <div class="xp-level">
+          <div class="xp-range">101–200 XP</div>
+          <div class="xp-title-wrap">
+            <div class="xp-title-en">Designer</div>
+            <div class="xp-title-es">Diseñador/a</div>
+          </div>
+          <div class="xp-dot dot-2"></div>
         </div>
-        <div class="act-body">
-          <div class="act-desc">Match scenarios to SDT, Flow, and Octalysis — interactive drag-and-drop to reinforce motivational frameworks.</div>
-          <div class="act-meta">
-            <span class="coming-badge">Coming soon</span>
+        <div class="xp-level">
+          <div class="xp-range">201–300 XP</div>
+          <div class="xp-title-wrap">
+            <div class="xp-title-en">Strategist</div>
+            <div class="xp-title-es">Estratega</div>
+          </div>
+          <div class="xp-dot dot-3"></div>
+        </div>
+        <div class="xp-level">
+          <div class="xp-range">301–450 XP</div>
+          <div class="xp-title-wrap">
+            <div class="xp-title-en">AI Mentor</div>
+            <div class="xp-title-es">Mentor/a IA</div>
+          </div>
+          <div class="xp-dot dot-4"></div>
+        </div>
+        <div class="xp-level">
+          <div class="xp-range">451–600 XP</div>
+          <div class="xp-title-wrap">
+            <div class="xp-title-en">Engagement Hero</div>
+            <div class="xp-title-es">Héroe/a del Engagement</div>
+          </div>
+          <div class="xp-dot dot-5"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:1.5rem;">
+        <p style="font-size:13px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:0.75rem;">System B — Participation states (instructor-facing)</p>
+        <div style="display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:6px;overflow:hidden;">
+          <div style="padding:0.875rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.75rem;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#7049b0;flex-shrink:0;"></span>
+            <div>
+              <div style="font-size:14px;font-weight:500;color:var(--ink);">Active Explorer</div>
+              <div style="font-size:12px;color:var(--ink-soft);font-style:italic;">Explorador Activo · Continue and reinforce</div>
+            </div>
+          </div>
+          <div style="padding:0.875rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.75rem;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#6AC7DC;flex-shrink:0;"></span>
+            <div>
+              <div style="font-size:14px;font-weight:500;color:var(--ink);">Explorer in Progress</div>
+              <div style="font-size:12px;color:var(--ink-soft);font-style:italic;">Explorador en Progreso · Proactive outreach</div>
+            </div>
+          </div>
+          <div style="padding:0.875rem 1.25rem;display:flex;align-items:center;gap:0.75rem;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#c0392b;flex-shrink:0;"></span>
+            <div>
+              <div style="font-size:14px;font-weight:500;color:var(--ink);">Passive Explorer</div>
+              <div style="font-size:12px;color:var(--ink-soft);font-style:italic;">Explorador Pasivo · Alert and support</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="mission-group">
-    <div class="mission-label">Mission 2 · La Forja del Héroe — Narrative design &amp; game mechanics</div>
-    <div class="activity-grid">
-      <a href="game-mechanics-decoder.html" class="act-card">
-        <div class="act-header">
-          <span class="act-type-pill">Classification</span>
-          <div class="act-title">Game Mechanics Decoder</div>
-          <div class="act-title-es">Decodificador de Mecánicas de Juego</div>
-        </div>
-        <div class="act-body">
-          <div class="act-desc">Classify 15 game mechanics into Rewards, Progression, Feedback, and Social categories. Unlimited attempts, immediate feedback.</div>
-          <div class="act-meta">
-            <span class="act-tag">15 mechanics</span>
-            <span class="act-link">Open →</span>
+    <div class="xp-right">
+      <div>
+        <p style="font-size:13px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:0.75rem;">XP earned per session</p>
+        <div class="xp-sources">
+          <div class="xp-source">
+            <div class="xp-source-label">Synchronous participation<span>Active contributions, group dynamics</span></div>
+            <div class="xp-source-pts">60 XP</div>
+          </div>
+          <div class="xp-source">
+            <div class="xp-source-label">Asynchronous activities<span>Deliverables, reflection quality</span></div>
+            <div class="xp-source-pts">40 XP</div>
+          </div>
+          <div class="xp-source">
+            <div class="xp-source-label">Outstanding bonus<span>Creative AI use, peer support</span></div>
+            <div class="xp-source-pts">+20 XP</div>
           </div>
         </div>
-      </a>
-      <a href="narrative-arc-builder.html" class="act-card">
-        <div class="act-header">
-          <span class="act-type-pill">Wizard</span>
-          <div class="act-title">Narrative Arc Builder</div>
-          <div class="act-title-es">Constructor de Arco Narrativo</div>
-        </div>
-        <div class="act-body">
-          <div class="act-desc">Step-by-step guided activity to build a complete gamified narrative arc using the Hero's Journey framework. Generates a downloadable summary.</div>
-          <div class="act-meta">
-            <span class="act-tag">9-step wizard</span>
-            <span class="act-link">Open →</span>
-          </div>
-        </div>
-      </a>
-    </div>
-  </div>
+      </div>
 
-  <div class="mission-group">
-    <div class="mission-label">Missions 3–6 · More activities in development</div>
-    <div class="activity-grid">
-      <div class="act-card coming-soon">
-        <div class="act-header">
-          <span class="act-type-pill">Design</span>
-          <div class="act-title">XP Rubric Builder</div>
-          <div class="act-title-es">Constructor de Rúbrica XP</div>
+      <div class="xp-total">
+        <div>
+          <div class="xp-total-label">Total XP across 6 sessions</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.35);margin-top:2px;">with all bonuses</div>
         </div>
-        <div class="act-body">
-          <div class="act-desc">Mission 5 — Students design their own XP rubric for a gamified assessment system, defining criteria and point values.</div>
-          <div class="act-meta"><span class="coming-badge">Coming soon</span></div>
-        </div>
+        <div class="xp-total-num">720 XP</div>
       </div>
-      <div class="act-card coming-soon">
-        <div class="act-header">
-          <span class="act-type-pill">Simulation</span>
-          <div class="act-title">AI Ethics Audit</div>
-          <div class="act-title-es">Auditoría Ética de IA</div>
-        </div>
-        <div class="act-body">
-          <div class="act-desc">Mission 4 — Evaluate AI-generated gamification components against ethical criteria. Identify biases and design alternatives.</div>
-          <div class="act-meta"><span class="coming-badge">Coming soon</span></div>
-        </div>
-      </div>
-      <div class="act-card coming-soon">
-        <div class="act-header">
-          <span class="act-type-pill">Planning</span>
-          <div class="act-title">Impact Metrics Planner</div>
-          <div class="act-title-es">Planificador de Métricas de Impacto</div>
-        </div>
-        <div class="act-body">
-          <div class="act-desc">Mission 5 — Define measurable impact indicators for a gamification project: engagement, learning outcomes, and motivation metrics.</div>
-          <div class="act-meta"><span class="coming-badge">Coming soon</span></div>
-        </div>
+
+      <div style="background:var(--forest-light);border:1px solid rgba(26,74,60,0.15);border-radius:6px;padding:1.25rem;">
+        <p style="font-size:13px;font-weight:500;color:var(--forest);margin-bottom:0.5rem;">Assessment formula</p>
+        <p style="font-size:13px;color:var(--ink-mid);line-height:1.7;">
+          PF = TA1 (20%) + TA2 (30%) + TF (40%) + PA (10%)<br>
+          <span style="font-size:12px;color:var(--ink-soft);">XP total → transforms into PA grade (10%)</span>
+        </p>
       </div>
     </div>
   </div>
+</section>
 
-</div>
+<!-- ACHIEVEMENTS -->
+<section id="achievements" class="full-bleed" style="padding:5rem 0;">
+  <div class="inner">
+    <div class="section-header">
+      <div class="section-eyebrow">Native Blackboard Ultra achievements · Logros nativos</div>
+      <h2 class="section-title">Four-tier badge system built on Blackboard Ultra</h2>
+      <p class="section-subtitle">Sistema de 4 insignias nativo en Blackboard Ultra — sin herramientas externas</p>
+    </div>
+
+    <div class="achievements-grid">
+      <div class="achievement-card">
+        <div class="achievement-icon">🔍</div>
+        <div class="achievement-tier">Entry tier</div>
+        <div class="achievement-title">Ethical Explorer</div>
+        <div class="achievement-title-es">Explorador/a Ético/a</div>
+        </div>
+      <div class="achievement-card">
+        <div class="achievement-icon">✏️</div>
+        <div class="achievement-tier">Developing tier</div>
+        <div class="achievement-title">Narrative Architect</div>
+        <div class="achievement-title-es">Arquitecto/a Narrativo/a</div>
+        </div>
+      <div class="achievement-card">
+        <div class="achievement-icon">⭐</div>
+        <div class="achievement-tier">Advanced tier</div>
+        <div class="achievement-title">Engagement Hero</div>
+        <div class="achievement-title-es">Héroe/a del Engagement</div>
+        </div>
+      <div class="achievement-card">
+        <div class="achievement-icon">🤖</div>
+        <div class="achievement-tier">Mastery tier</div>
+        <div class="achievement-title">Playful AI Master</div>
+        <div class="achievement-title-es">Maestro/a de la IA Lúdica</div>
+        </div>
+    </div>
+
+    <p style="margin-top:1.5rem;font-size:14px;color:var(--ink-soft);text-align:center;">
+      Unlock curve 71% → 71% → 64% → 57% — broad entry, meaningful mastery.
+    </p>
+  </div>
+</section>
+
+<!-- ACTIVITIES -->
+<section id="activities">
+  <div class="section-header">
+    <div class="section-eyebrow">Activity library · Biblioteca de actividades</div>
+    <h2 class="section-title">Interactive HTML activities, ready to embed</h2>
+    <p class="section-subtitle">Actividades interactivas HTML listas para embedder en Blackboard Ultra</p>
+  </div>
+
+  <div class="activities-intro">
+    <p class="activities-desc">
+      Each activity is a single HTML file generated with Anthropic Claude and embedded directly inside Blackboard Ultra. No external tools, no plugins — the entire interaction happens within the LMS. Download any activity, open in a text editor, and paste the code into Blackboard's HTML editor.
+    </p>
+    <div class="how-to-embed">
+      <h4>How to embed in Blackboard Ultra</h4>
+      <ol>
+        <li>Open any activity page below</li>
+        <li>Click "Download HTML"</li>
+        <li>In Blackboard Ultra, create a new Document</li>
+        <li>Click the "+" → HTML → paste the code</li>
+        <li>Save — students interact without leaving the LMS</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="activities-cards">
+    <a href="activities/game-mechanics-decoder.html" class="activity-card">
+      <div class="activity-card-header">
+        <div class="activity-mission-tag">Mission 2 · La Forja del Héroe</div>
+        <div class="activity-card-title">Game Mechanics Decoder</div>
+        <div class="activity-card-title-es">Decodificador de Mecánicas de Juego</div>
+        <span class="activity-card-type">Classification</span>
+      </div>
+      <div class="activity-card-body">
+        <div class="activity-card-desc">
+          Students classify 15 game mechanics into four categories (Rewards, Progression, Feedback, Social) with unlimited attempts and immediate feedback.
+        </div>
+        <div class="activity-card-footer">
+          <span class="activity-tag">Interactive</span>
+          <span class="activity-arrow">→</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="activities/narrative-arc-builder.html" class="activity-card">
+      <div class="activity-card-header">
+        <div class="activity-mission-tag">Mission 2 · La Forja del Héroe</div>
+        <div class="activity-card-title">Narrative Arc Builder</div>
+        <div class="activity-card-title-es">Constructor de Arco Narrativo</div>
+        <span class="activity-card-type">Scaffolded</span>
+      </div>
+      <div class="activity-card-body">
+        <div class="activity-card-desc">
+          A step-by-step guided activity that walks students through defining their Hero persona, world, conflict, and mission structure for their gamified experience.
+        </div>
+        <div class="activity-card-footer">
+          <span class="activity-tag">9-step wizard</span>
+          <span class="activity-arrow">→</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="activities/ethics-dilemma-cards.html" class="activity-card">
+      <div class="activity-card-header">
+        <div class="activity-mission-tag">Mission 1 · El Origen del Juego</div>
+        <div class="activity-card-title">Ethics Dilemma Cards</div>
+        <div class="activity-card-title-es">Cartas de Dilemas Éticos</div>
+        <span class="activity-card-type">Reflection</span>
+      </div>
+      <div class="activity-card-body">
+        <div class="activity-card-desc">
+          Scenario-based cards presenting real gamification dilemmas. Students identify dark patterns vs. ethical design and reflect on the values behind each mechanic.
+        </div>
+        <div class="activity-card-footer">
+          <span class="activity-tag">6 scenarios</span>
+          <span class="activity-arrow">→</span>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- REPLICATION -->
+<section id="replication" class="full-bleed" style="padding:5rem 0;background:var(--forest);">
+  <div class="inner">
+    <div class="section-header">
+      <div class="section-eyebrow">Replication guide · Guía para la replicación</div>
+      <h2 class="section-title">Fully documented for institutional adoption</h2>
+      <p class="section-subtitle">Completamente documentado para adopción institucional en Blackboard Ultra</p>
+    </div>
+
+    <div class="replication-grid">
+      <div class="rep-card">
+        <span class="rep-card-icon">🗺️</span>
+        <div class="rep-card-title">Mission architecture</div>
+        <div class="rep-card-title-es">Arquitectura de misiones</div>
+        <div class="rep-card-desc">Narrative arc design and ethical challenge structure for each of the six missions. Adaptable to any discipline.</div>
+      </div>
+      <div class="rep-card">
+        <span class="rep-card-icon">⚡</span>
+        <div class="rep-card-title">XP rubrics</div>
+        <div class="rep-card-title-es">Rúbricas XP</div>
+        <div class="rep-card-desc">Participation criteria, accumulation logic, and bonus criteria — aligned to self-determination theory and intrinsic motivation.</div>
+      </div>
+      <div class="rep-card">
+        <span class="rep-card-icon">📊</span>
+        <div class="rep-card-title">Dual-layer monitoring</div>
+        <div class="rep-card-title-es">Monitoreo de doble capa</div>
+        <div class="rep-card-desc">Competency level progression setup plus participation state tracking — both systems run simultaneously.</div>
+      </div>
+      <div class="rep-card">
+        <span class="rep-card-icon">🏅</span>
+        <div class="rep-card-title">Achievement configuration</div>
+        <div class="rep-card-title-es">Configuración de logros</div>
+        <div class="rep-card-desc">4-tier badge setup guide for Blackboard Ultra's native Achievement system — no external tools required.</div>
+      </div>
+      <div class="rep-card">
+        <span class="rep-card-icon">🤖</span>
+        <div class="rep-card-title">Ethical AI guidelines</div>
+        <div class="rep-card-title-es">Lineamientos de IA ética</div>
+        <div class="rep-card-desc">Template adaptable to institutional policy. Co-developed with students at the start of the course — a professional commitment, not a rule.</div>
+      </div>
+      <div class="rep-card">
+        <span class="rep-card-icon">📝</span>
+        <div class="rep-card-title">AI-assisted rubrics</div>
+        <div class="rep-card-title-es">Rúbricas asistidas por IA</div>
+        <div class="rep-card-desc">Assessment instruments designed with Blackboard's AI tools, aligned to the XP progression and competency levels.</div>
+      </div>
+    </div>
+
+    <div class="rep-targets">
+      <div class="rep-targets-label">Target institutions</div>
+      <span class="rep-target-pill">Blackboard Ultra</span>
+      <span class="rep-target-pill">Graduate education</span>
+      <span class="rep-target-pill">Educación de posgrado</span>
+    </div>
+  </div>
+</section>
 
 <footer>
   <div class="footer-brand">Ethics Motivation Lab</div>
   <div class="footer-meta">
-    <div class="footer-author">Jessica Vlasica · EPG UPC</div>
+    <div class="footer-author">Jessica Vlasica · EPG UPC / GDAO Laureate Peru</div>
     <div>pejvlasi@upc.edu.pe · 2026 Blackboard Catalyst Award — Teaching Excellence</div>
     <div style="margin-top:4px;font-size:12px;">Specialized Program in Educational Innovation and Emerging Technologies</div>
   </div>
