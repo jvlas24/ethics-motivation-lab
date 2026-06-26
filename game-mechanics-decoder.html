@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decodificador de Mecánicas de Juego · Misión 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --forest: #533477;
+  --forest-mid: #6b45a0;
+  --forest-light: #f0eaf8;
+  --gold: #6AC7DC;
+  --gold-light: #e8f7fa;
+  --ink: #1a1a1a;
+  --ink-mid: #444444;
+  --ink-soft: #7a7979;
+  --paper: #fafafa;
+  --white: #fff;
+  --border: rgba(83,52,119,0.12);
+  --c-reward: #7B3FC4;
+  --c-reward-bg: #F3EAFB;
+  --c-prog: #533477;
+  --c-prog-bg: #f0eaf8;
+  --c-feed: #1a6e7e;
+  --c-feed-bg: #e8f7fa;
+  --c-social: #1867C0;
+  --c-social-bg: #E8F0FB;
+}
+body { font-family: 'Inter', sans-serif; background: var(--paper); color: var(--ink); min-height: 100vh; }
+
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(250,250,250,0.95); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 1.5rem; display: flex; align-items: center;
+  justify-content: space-between; height: 52px;
+}
+.nav-logo { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--forest); text-decoration: none; }
+.nav-logo span { color: var(--ink-soft); font-weight: 400; }
+.nav-back { font-size: 13px; color: var(--ink-mid); text-decoration: none; }
+.nav-back:hover { color: var(--forest); }
+
+.activity-header { background: var(--forest); padding: 2rem; }
+.mission-tag { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 4px; }
+.activity-title { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; color: white; letter-spacing: -0.03em; margin-bottom: 2px; }
+.activity-subtitle { font-size: 13px; color: rgba(255,255,255,0.5); font-style: italic; }
+
+.instructions-box { background: var(--gold-light); border-bottom: 1px solid rgba(106,199,220,0.35); padding: 1.25rem 2rem; }
+.instructions-box h3 { font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #1a6e7e; margin-bottom: 0.5rem; }
+.instructions-list { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
+.instructions-list li { font-size: 13px; color: var(--ink-mid); display: flex; align-items: center; gap: 6px; }
+.instructions-list li::before { content: '→'; color: var(--gold); font-weight: 500; }
+
+.stats-bar { display: flex; gap: 2rem; padding: 1rem 2rem; border-bottom: 1px solid var(--border); background: white; flex-wrap: wrap; }
+.stat { display: flex; align-items: center; gap: 8px; }
+.stat-label { font-size: 12px; color: var(--ink-soft); }
+.stat-val { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--forest); background: var(--forest-light); padding: 2px 10px; border-radius: 100px; }
+
+.categories-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border-bottom: 1px solid var(--border); }
+.category { padding: 1rem 1.5rem; background: white; display: flex; align-items: center; gap: 10px; }
+.cat-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+.cat-title { font-size: 13px; font-weight: 500; }
+.cat-sub { font-size: 11px; color: var(--ink-soft); }
+
+.mechanics-area { padding: 1.5rem 2rem; }
+.mechanics-area h3 { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 1rem; }
+.mechanics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+
+.mechanic-card {
+  border: 1.5px solid var(--border); border-radius: 8px; background: white; padding: 1rem;
+  cursor: pointer; transition: all 0.15s; position: relative;
+}
+.mechanic-card:hover:not(.assigned) { border-color: var(--forest); background: var(--forest-light); }
+.mechanic-card:focus { outline: 2px solid var(--forest); outline-offset: 2px; }
+.mechanic-card.assigned { opacity: 0.65; }
+.mechanic-card.selected { border-color: var(--gold) !important; background: var(--gold-light) !important; box-shadow: 0 0 0 3px rgba(106,199,220,0.25); }
+.mechanic-card.cat-reward { border-color: var(--c-reward); background: var(--c-reward-bg); }
+.mechanic-card.cat-progression { border-color: var(--c-prog); background: var(--c-prog-bg); }
+.mechanic-card.cat-feedback { border-color: var(--c-feed); background: var(--c-feed-bg); }
+.mechanic-card.cat-social { border-color: var(--c-social); background: var(--c-social-bg); }
+
+.mechanic-num { font-size: 10px; color: var(--ink-soft); margin-bottom: 4px; }
+.mechanic-name { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+.mechanic-desc { font-size: 12px; color: var(--ink-soft); line-height: 1.5; }
+.mechanic-badge { position: absolute; top: 8px; right: 8px; font-size: 10px; padding: 2px 7px; border-radius: 100px; font-weight: 500; display: none; }
+.mechanic-card.cat-reward .mechanic-badge { display: block; background: var(--c-reward-bg); color: var(--c-reward); border: 1px solid var(--c-reward); }
+.mechanic-card.cat-progression .mechanic-badge { display: block; background: var(--c-prog-bg); color: var(--c-prog); border: 1px solid var(--c-prog); }
+.mechanic-card.cat-feedback .mechanic-badge { display: block; background: var(--c-feed-bg); color: var(--c-feed); border: 1px solid var(--c-feed); }
+.mechanic-card.cat-social .mechanic-badge { display: block; background: var(--c-social-bg); color: var(--c-social); border: 1px solid var(--c-social); }
+
+.category-buttons { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1.5rem; }
+.cat-btn {
+  font-size: 13px; font-weight: 500; padding: 8px 16px; border-radius: 6px;
+  border: 1.5px solid; cursor: pointer; transition: all 0.15s;
+  display: flex; align-items: center; gap: 6px;
+}
+.cat-btn:disabled { opacity: 0.35; cursor: default; }
+.cat-btn:not(:disabled):hover { opacity: 0.85; transform: translateY(-1px); }
+.cat-btn.reward { background: var(--c-reward-bg); border-color: var(--c-reward); color: var(--c-reward); }
+.cat-btn.progression { background: var(--c-prog-bg); border-color: var(--c-prog); color: var(--c-prog); }
+.cat-btn.feedback { background: var(--c-feed-bg); border-color: var(--c-feed); color: var(--c-feed); }
+.cat-btn.social { background: var(--c-social-bg); border-color: var(--c-social); color: var(--c-social); }
+
+.feedback-panel { margin: 1rem 2rem; padding: 1.25rem 1.5rem; border-radius: 6px; display: none; animation: fadeIn 0.3s; }
+.feedback-panel.success { background: #e8f5e9; border: 1px solid #4caf50; }
+.feedback-panel.error { background: #fdecea; border: 1px solid #f44336; }
+.feedback-panel.info { background: var(--forest-light); border: 1px solid var(--forest); }
+.feedback-panel.show { display: block; }
+.feedback-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+.feedback-desc { font-size: 13px; color: var(--ink-mid); line-height: 1.6; }
+
+.results-panel { margin: 1.5rem 2rem; background: white; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; display: none; }
+.results-panel.show { display: block; }
+.results-header { background: var(--forest); padding: 1.25rem 1.5rem; }
+.results-header h3 { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800; color: white; }
+.results-score { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+.results-body { padding: 1.5rem; }
+.results-cats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.result-cat { border-radius: 6px; padding: 1rem; }
+.result-cat.reward { background: var(--c-reward-bg); border: 1px solid rgba(123,63,196,0.2); }
+.result-cat.progression { background: var(--c-prog-bg); border: 1px solid rgba(83,52,119,0.2); }
+.result-cat.feedback { background: var(--c-feed-bg); border: 1px solid rgba(26,110,126,0.2); }
+.result-cat.social { background: var(--c-social-bg); border: 1px solid rgba(24,103,192,0.2); }
+.result-cat-title { font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.result-cat.reward .result-cat-title { color: var(--c-reward); }
+.result-cat.progression .result-cat-title { color: var(--c-prog); }
+.result-cat.feedback .result-cat-title { color: var(--c-feed); }
+.result-cat.social .result-cat-title { color: var(--c-social); }
+.result-items { display: flex; flex-direction: column; gap: 4px; }
+.result-item { font-size: 13px; color: var(--ink-mid); display: flex; align-items: flex-start; gap: 6px; }
+.result-item .ok { color: #4caf50; flex-shrink: 0; font-weight: 500; }
+.result-item .wrong { color: #f44336; flex-shrink: 0; font-weight: 500; }
+
+.action-row { display: flex; gap: 12px; padding: 0 2rem 2rem; flex-wrap: wrap; }
+.btn-verify { font-size: 14px; font-weight: 500; padding: 11px 24px; border-radius: 6px; border: none; cursor: pointer; transition: all 0.15s; background: var(--forest); color: white; }
+.btn-verify:hover { background: var(--forest-mid); }
+.btn-verify:disabled { opacity: 0.5; cursor: default; }
+.btn-reset { font-size: 14px; font-weight: 500; padding: 11px 24px; border-radius: 6px; border: 1.5px solid var(--border); background: white; color: var(--ink-mid); cursor: pointer; transition: all 0.15s; }
+.btn-reset:hover { border-color: var(--ink-mid); }
+
+.download-bar { background: var(--ink); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
+.download-bar p { font-size: 13px; color: rgba(255,255,255,0.55); }
+.btn-download { font-size: 13px; font-weight: 500; padding: 8px 18px; border-radius: 6px; background: var(--gold); border: none; color: #1a1a1a; cursor: pointer; transition: opacity 0.15s; }
+.btn-download:hover { opacity: 0.85; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 700px) {
+  .mechanics-grid { grid-template-columns: 1fr 1fr; }
+  .categories-bar { grid-template-columns: 1fr 1fr; }
+  .results-cats { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .mechanics-grid { grid-template-columns: 1fr; }
+  .mechanics-area { padding: 1rem; }
+  .action-row { padding: 0 1rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">Ethics Motivation <span>Lab</span></a>
+  <a href="index.html" class="nav-back">← Activity library</a>
+</nav>
+
+<div class="activity-header">
+  <div class="mission-tag">Misión 2 · Actividad 1 · La Forja del Héroe</div>
+  <div class="activity-title">🎮 Decodificador de Mecánicas de Juego</div>
+  <div class="activity-subtitle">Game Mechanics Decoder</div>
+</div>
+
+<div class="instructions-box">
+  <h3>Instrucciones</h3>
+  <ul class="instructions-list">
+    <li>Haz clic en una mecánica para seleccionarla</li>
+    <li>Luego elige su categoría con los botones de abajo</li>
+    <li>Puedes cambiar tu respuesta haciendo clic de nuevo</li>
+    <li>Intentos ilimitados — el objetivo es aprender</li>
+  </ul>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><span class="stat-label">Clasificadas</span><span class="stat-val" id="stat-done">0/15</span></div>
+  <div class="stat"><span class="stat-label">Intentos de verificación</span><span class="stat-val" id="stat-attempts">0</span></div>
+  <div class="stat"><span class="stat-label">Correctas</span><span class="stat-val" id="stat-correct">—</span></div>
+</div>
+
+<div class="categories-bar">
+  <div class="category">
+    <div class="cat-icon" style="background:#F3EAFB;">🏆</div>
+    <div><div class="cat-title" style="color:#7B3FC4;">Recompensas</div><div class="cat-sub">Reconocimientos y premios</div></div>
+  </div>
+  <div class="category">
+    <div class="cat-icon" style="background:#f0eaf8;">📈</div>
+    <div><div class="cat-title" style="color:#533477;">Progresión</div><div class="cat-sub">Estructura de avance</div></div>
+  </div>
+  <div class="category">
+    <div class="cat-icon" style="background:#e8f7fa;">⚡</div>
+    <div><div class="cat-title" style="color:#1a6e7e;">Feedback</div><div class="cat-sub">Información sobre desempeño</div></div>
+  </div>
+  <div class="category">
+    <div class="cat-icon" style="background:#E8F0FB;">👥</div>
+    <div><div class="cat-title" style="color:#1867C0;">Social</div><div class="cat-sub">Interacción y comunidad</div></div>
+  </div>
+</div>
+
+<div class="mechanics-area">
+  <h3>Mecánicas de juego — selecciona una y clasifícala</h3>
+  <div class="mechanics-grid" id="mechanics-grid"></div>
+  <div style="margin-top:1.25rem;">
+    <p style="font-size:12px;color:var(--ink-soft);margin-bottom:0.75rem;">¿Dónde pertenece la mecánica seleccionada? <span id="selected-hint" style="font-weight:500;color:var(--ink);"></span></p>
+    <div class="category-buttons">
+      <button class="cat-btn reward" onclick="classify('reward')" id="btn-reward" disabled>🏆 Recompensas</button>
+      <button class="cat-btn progression" onclick="classify('progression')" id="btn-progression" disabled>📈 Progresión</button>
+      <button class="cat-btn feedback" onclick="classify('feedback')" id="btn-feedback" disabled>⚡ Feedback</button>
+      <button class="cat-btn social" onclick="classify('social')" id="btn-social" disabled>👥 Social</button>
+    </div>
+  </div>
+</div>
+
+<div class="feedback-panel" id="feedback-panel">
+  <div class="feedback-title" id="feedback-title"></div>
+  <div class="feedback-desc" id="feedback-desc"></div>
+</div>
+
+<div class="results-panel" id="results-panel">
+  <div class="results-header">
+    <h3 id="results-title">Resultados</h3>
+    <div class="results-score" id="results-score"></div>
+  </div>
+  <div class="results-body">
+    <div class="results-cats" id="results-cats"></div>
+  </div>
+</div>
+
+<div class="action-row">
+  <button class="btn-verify" id="btn-verify" onclick="verify()" disabled>Verificar respuestas</button>
+  <button class="btn-reset" onclick="reset()">Reiniciar</button>
+</div>
+
+<div class="download-bar">
+  <p>Ethics Motivation Lab · EPG UPC · Jessica Vlasica · Misión 2</p>
+  <button class="btn-download" onclick="downloadHTML()">⬇ Descargar HTML para Blackboard</button>
+</div>
+
+<script>
+const MECHANICS = [
+  { id:1, name:'Puntos de XP', desc:'Acumulan al completar actividades progresivamente', cat:'reward' },
+  { id:2, name:'Niveles que se desbloquean', desc:'Novato, Experto, Maestro...', cat:'progression' },
+  { id:3, name:'Barras de progreso', desc:'Visualizan avance hacia una meta', cat:'progression' },
+  { id:4, name:'Insignias / Badges', desc:'Reconocen logros específicos', cat:'reward' },
+  { id:5, name:'Retroalimentación inmediata', desc:'Respuesta instantánea tras una acción', cat:'feedback' },
+  { id:6, name:'Tablas de clasificación', desc:'Rankings comparativos entre participantes', cat:'social' },
+  { id:7, name:'Misiones / Quests', desc:'Objetivos narrativos con estructura', cat:'progression' },
+  { id:8, name:'Tiempo límite / Urgencia', desc:'Presión temporal para completar tareas', cat:'feedback' },
+  { id:9, name:'Avatares personalizados', desc:'Representación visual del aprendiz', cat:'social' },
+  { id:10, name:'Rachas de actividad', desc:'Streak de días o sesiones consecutivas', cat:'feedback' },
+  { id:11, name:'Recompensas sorpresa', desc:'Bonos inesperados para motivar', cat:'reward' },
+  { id:12, name:'Colaboración en equipo', desc:'Metas grupales y roles compartidos', cat:'social' },
+  { id:13, name:'Rutas de aprendizaje', desc:'Caminos ramificados con elecciones', cat:'progression' },
+  { id:14, name:'Tablero de XP grupal', desc:'Visualización del progreso colectivo', cat:'social' },
+  { id:15, name:'Narrativa y misiones éticas', desc:'Historia que da sentido a las mecánicas', cat:'progression' },
+];
+const CAT_LABELS = { reward:'Recompensas', progression:'Progresión', feedback:'Feedback', social:'Social' };
+const CAT_EMOJIS = { reward:'🏆', progression:'📈', feedback:'⚡', social:'👥' };
+
+let state = {}, selectedId = null, attempts = 0, verified = false;
+
+function init() {
+  state = {}; selectedId = null; attempts = 0; verified = false;
+  renderGrid(); updateStats(); hideFeedback();
+  document.getElementById('results-panel').classList.remove('show');
+  document.getElementById('btn-verify').disabled = true;
+  setBtns(false);
+  document.getElementById('selected-hint').textContent = '';
+}
+
+function renderGrid() {
+  document.getElementById('mechanics-grid').innerHTML = MECHANICS.map(m => {
+    const assignment = state[m.id];
+    const cls = assignment ? `mechanic-card assigned cat-${assignment}` : 'mechanic-card';
+    const badge = assignment ? `<span class="mechanic-badge">${CAT_EMOJIS[assignment]} ${CAT_LABELS[assignment]}</span>` : '';
+    return `<div class="${cls}" id="mcard-${m.id}" onclick="select(${m.id})" tabindex="0" onkeydown="if(event.key==='Enter')select(${m.id})">
+      <div class="mechanic-num">${m.id}</div>
+      <div class="mechanic-name">${m.name}</div>
+      <div class="mechanic-desc">${m.desc}</div>${badge}</div>`;
+  }).join('');
+}
+
+function select(id) {
+  if (verified) return;
+  const prev = document.getElementById(`mcard-${selectedId}`);
+  if (prev) prev.classList.remove('selected');
+  if (selectedId === id) { selectedId = null; setBtns(false); document.getElementById('selected-hint').textContent = ''; hideFeedback(); return; }
+  selectedId = id;
+  document.getElementById(`mcard-${id}`).classList.add('selected');
+  const m = MECHANICS.find(x => x.id === id);
+  document.getElementById('selected-hint').textContent = `"${m.name}" seleccionada`;
+  setBtns(true); hideFeedback();
+}
+
+function setBtns(enabled) {
+  ['reward','progression','feedback','social'].forEach(c => { document.getElementById(`btn-${c}`).disabled = !enabled; });
+}
+
+function classify(cat) {
+  if (!selectedId || verified) return;
+  state[selectedId] = cat;
+  const prev = document.getElementById(`mcard-${selectedId}`);
+  if (prev) prev.classList.remove('selected');
+  renderGrid(); selectedId = null; setBtns(false);
+  document.getElementById('selected-hint').textContent = '';
+  updateStats(); hideFeedback();
+}
+
+function updateStats() {
+  const done = Object.keys(state).length;
+  document.getElementById('stat-done').textContent = `${done}/15`;
+  document.getElementById('btn-verify').disabled = done < 15;
+}
+
+function verify() {
+  attempts++;
+  document.getElementById('stat-attempts').textContent = attempts;
+  let correct = 0;
+  MECHANICS.forEach(m => { if (state[m.id] === m.cat) correct++; });
+  document.getElementById('stat-correct').textContent = `${correct}/15`;
+  if (correct === 15) {
+    showFeedback('success', '¡Perfecto! 15/15 correctas 🎉', 'Dominas la clasificación de mecánicas de juego. Reflexiona: ¿cuáles se relacionan con motivación intrínseca y cuáles con extrínseca?');
+    showResults(correct); verified = true;
+  } else if (correct >= 10) {
+    showFeedback('info', `${correct}/15 correctas — ¡Buen intento! Revisa las resaltadas.`, 'Considera: ¿estás diferenciando entre feedback (información sobre desempeño) y progresión (estructura de avance)?');
+    showResults(correct);
+  } else {
+    showFeedback('error', `${correct}/15 correctas — Sigue practicando.`, 'Recuerda: Recompensas reconocen logros. Progresión crea estructura. Feedback informa el desempeño. Social involucra a otros.');
+    showResults(correct);
+  }
+}
+
+function showFeedback(type, title, desc) {
+  const p = document.getElementById('feedback-panel');
+  p.className = `feedback-panel show ${type}`;
+  document.getElementById('feedback-title').textContent = title;
+  document.getElementById('feedback-desc').textContent = desc;
+}
+function hideFeedback() { document.getElementById('feedback-panel').className = 'feedback-panel'; }
+
+function showResults(correctCount) {
+  const panel = document.getElementById('results-panel');
+  panel.classList.add('show');
+  document.getElementById('results-title').textContent = `Resultados — ${correctCount}/15 correctas`;
+  document.getElementById('results-score').textContent = `Intento #${attempts} · ${Math.round(correctCount/15*100)}% de precisión`;
+  const cats = ['reward','progression','feedback','social'];
+  document.getElementById('results-cats').innerHTML = cats.map(cat => {
+    const mechanics = MECHANICS.filter(m => m.cat === cat);
+    const items = mechanics.map(m => {
+      const icon = state[m.id] === m.cat ? '<span class="ok">✓</span>' : '<span class="wrong">✗</span>';
+      const note = state[m.id] !== m.cat ? ` <em style="font-size:11px;color:var(--ink-soft);">(marcaste: ${state[m.id] ? CAT_LABELS[state[m.id]] : '—'})</em>` : '';
+      return `<div class="result-item">${icon} ${m.name}${note}</div>`;
+    }).join('');
+    return `<div class="result-cat ${cat}"><div class="result-cat-title">${CAT_EMOJIS[cat]} ${CAT_LABELS[cat]}</div><div class="result-items">${items}</div></div>`;
+  }).join('');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function reset() { init(); }
+
+function downloadHTML() {
+  const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html;charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'mision2-decodificador-mecanicas.html'; a.click();
+}
+init();
+</script>
+</body>
+</html>

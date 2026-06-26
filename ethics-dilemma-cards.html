@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cartas de Dilemas Éticos · Misión 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --forest: #533477;
+  --forest-mid: #6b45a0;
+  --forest-light: #f0eaf8;
+  --gold: #6AC7DC;
+  --gold-light: #e8f7fa;
+  --ink: #1a1a1a;
+  --ink-mid: #444444;
+  --ink-soft: #7a7979;
+  --paper: #fafafa;
+  --white: #fff;
+  --border: rgba(83,52,119,0.12);
+  --red: #c0392b; --red-bg: #fdecea;
+  --green: #1a6b3c; --green-bg: #e8f5e9;
+}
+body { font-family: 'Inter', sans-serif; background: var(--paper); color: var(--ink); min-height: 100vh; }
+
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(250,250,250,0.95); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 1.5rem; display: flex; align-items: center;
+  justify-content: space-between; height: 52px;
+}
+.nav-logo { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--forest); text-decoration: none; }
+.nav-logo span { color: var(--ink-soft); font-weight: 400; }
+.nav-back { font-size: 13px; color: var(--ink-mid); text-decoration: none; }
+.nav-back:hover { color: var(--forest); }
+
+.activity-header { background: var(--forest); padding: 2rem; }
+.mission-tag { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 4px; }
+.activity-title { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; color: white; letter-spacing: -0.03em; margin-bottom: 2px; }
+.activity-subtitle { font-size: 13px; color: rgba(255,255,255,0.5); font-style: italic; }
+
+.progress-bar-wrap { background: var(--ink); padding: 0.75rem 2rem; display: flex; align-items: center; gap: 1rem; }
+.progress-label { font-size: 12px; color: rgba(255,255,255,0.5); white-space: nowrap; }
+.progress-track { flex: 1; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--gold); transition: width 0.4s; }
+.progress-count { font-size: 12px; color: rgba(255,255,255,0.5); white-space: nowrap; font-family: 'Syne', sans-serif; font-weight: 700; }
+
+.scenario-area { max-width: 780px; margin: 0 auto; padding: 2rem; }
+
+.scenario-card { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 1.5rem; }
+.scenario-card-header { background: var(--forest); padding: 1.5rem; }
+.scenario-num { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 6px; }
+.scenario-title { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 6px; }
+.scenario-context { font-size: 13px; color: rgba(255,255,255,0.55); font-style: italic; }
+
+.scenario-card-body { padding: 1.5rem; }
+.scenario-situation { font-size: 15px; color: var(--ink); line-height: 1.7; margin-bottom: 1.5rem; background: var(--paper); border-radius: 6px; padding: 1.25rem; border-left: 3px solid var(--gold); }
+.question { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 1rem; }
+
+.options-grid { display: grid; gap: 0.75rem; }
+.option-btn {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 1rem 1.25rem; border-radius: 6px;
+  border: 1.5px solid var(--border); background: white;
+  cursor: pointer; text-align: left; transition: all 0.15s; width: 100%;
+}
+.option-btn:hover:not(:disabled) { border-color: var(--forest); background: var(--forest-light); }
+.option-btn.selected-correct { border-color: var(--green); background: var(--green-bg) !important; }
+.option-btn.selected-wrong { border-color: var(--red); background: var(--red-bg) !important; }
+.option-btn.reveal-correct { border-color: var(--green); background: var(--green-bg); }
+.option-btn:disabled { cursor: default; }
+
+.option-letter {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--paper); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 500; flex-shrink: 0; margin-top: 1px; color: var(--ink-soft);
+}
+.option-btn.selected-correct .option-letter { background: var(--green); border-color: var(--green); color: white; }
+.option-btn.selected-wrong .option-letter { background: var(--red); border-color: var(--red); color: white; }
+.option-btn.reveal-correct .option-letter { background: var(--green); border-color: var(--green); color: white; }
+.option-text { font-size: 14px; color: var(--ink-mid); line-height: 1.55; }
+
+.feedback-reveal { margin-top: 1.25rem; padding: 1.25rem; border-radius: 6px; display: none; animation: fadeIn 0.3s; }
+.feedback-reveal.show { display: block; }
+.feedback-reveal.correct { background: var(--green-bg); border: 1px solid rgba(26,107,60,0.3); }
+.feedback-reveal.wrong { background: var(--red-bg); border: 1px solid rgba(192,57,43,0.3); }
+.feedback-reveal-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+.feedback-reveal.correct .feedback-reveal-title { color: var(--green); }
+.feedback-reveal.wrong .feedback-reveal-title { color: var(--red); }
+.feedback-reveal-body { font-size: 13px; color: var(--ink-mid); line-height: 1.6; }
+.reflection-prompt { margin-top: 0.75rem; padding: 0.75rem; background: rgba(255,255,255,0.7); border-radius: 4px; font-size: 13px; color: var(--ink-soft); font-style: italic; }
+
+.nav-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; flex-wrap: wrap; gap: 0.75rem; }
+.btn-nav { font-size: 14px; font-weight: 500; padding: 10px 22px; border-radius: 6px; border: 1.5px solid var(--border); background: white; color: var(--ink-mid); cursor: pointer; transition: all 0.15s; }
+.btn-nav:hover { border-color: var(--forest); color: var(--forest); }
+.btn-nav.primary { background: var(--forest); border-color: var(--forest); color: white; }
+.btn-nav.primary:hover { background: var(--forest-mid); }
+.btn-nav:disabled { opacity: 0.4; cursor: default; }
+
+.final-panel { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; display: none; }
+.final-panel.show { display: block; }
+.final-header { background: var(--forest); padding: 2rem; text-align: center; }
+.final-header h2 { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; color: white; margin-bottom: 6px; }
+.final-score { font-size: 1rem; color: rgba(255,255,255,0.6); }
+.final-body { padding: 2rem; }
+.final-score-big { font-family: 'Syne', sans-serif; font-size: 3rem; font-weight: 800; color: var(--forest); text-align: center; line-height: 1; }
+.final-score-label { text-align: center; font-size: 14px; color: var(--ink-soft); margin-top: 4px; margin-bottom: 2rem; }
+.final-takeaways { display: flex; flex-direction: column; gap: 0.75rem; }
+.takeaway { display: flex; gap: 10px; padding: 1rem; background: var(--paper); border-radius: 6px; font-size: 14px; color: var(--ink-mid); line-height: 1.6; align-items: flex-start; }
+.takeaway-icon { flex-shrink: 0; font-size: 1rem; margin-top: 2px; }
+.final-cta { margin-top: 1.5rem; display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+
+.download-bar { background: var(--ink); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
+.download-bar p { font-size: 13px; color: rgba(255,255,255,0.55); }
+.btn-download { font-size: 13px; font-weight: 500; padding: 8px 18px; border-radius: 6px; background: var(--gold); border: none; color: #1a1a1a; cursor: pointer; }
+.btn-download:hover { opacity: 0.85; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">Ethics Motivation <span>Lab</span></a>
+  <a href="index.html" class="nav-back">← Activity library</a>
+</nav>
+
+<div class="activity-header">
+  <div class="mission-tag">Misión 1 · El Origen del Juego</div>
+  <div class="activity-title">⚖️ Cartas de Dilemas Éticos</div>
+  <div class="activity-subtitle">Ethics Dilemma Cards · Gamification &amp; Dark Patterns</div>
+</div>
+
+<div class="progress-bar-wrap">
+  <span class="progress-label">Progreso</span>
+  <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <span class="progress-count" id="progress-count">0 / 6</span>
+</div>
+
+<div class="scenario-area">
+  <div id="scenario-container"></div>
+  <div class="final-panel" id="final-panel">
+    <div class="final-header">
+      <h2>¡Análisis completo!</h2>
+      <div class="final-score">Has analizado los 6 escenarios de dilemas éticos</div>
+    </div>
+    <div class="final-body">
+      <div class="final-score-big" id="final-score-num">0/6</div>
+      <div class="final-score-label">identificadas correctamente</div>
+      <div class="final-takeaways">
+        <div class="takeaway"><span class="takeaway-icon">🎯</span><div><strong>Manipulación vs. motivación:</strong> La diferencia no está en la mecánica, sino en si respeta la autonomía del usuario y si genera valor real de aprendizaje.</div></div>
+        <div class="takeaway"><span class="takeaway-icon">⚖️</span><div><strong>Dark patterns:</strong> Las mecánicas que crean ansiedad, dependencia o presión social negativa son éticamente cuestionables, incluso si aumentan el engagement.</div></div>
+        <div class="takeaway"><span class="takeaway-icon">🌱</span><div><strong>Diseño ético:</strong> Las mejores mecánicas apoyan la motivación intrínseca, son transparentes, inclusivas y respetan el bienestar del aprendiz.</div></div>
+      </div>
+      <div class="final-cta">
+        <button class="btn-nav" onclick="restart()">↺ Reiniciar</button>
+        <a href="game-mechanics-decoder.html" style="text-decoration:none;"><button class="btn-nav primary">Siguiente actividad →</button></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="download-bar">
+  <p>Ethics Motivation Lab · EPG UPC · Jessica Vlasica · Misión 1</p>
+  <button class="btn-download" onclick="downloadHTML()">⬇ Descargar HTML para Blackboard</button>
+</div>
+
+<script>
+const SCENARIOS = [
+  { num:1, title:'El streak de 365 días', context:'Plataforma de idiomas tipo Duolingo', situation:'Una app de aprendizaje de idiomas muestra una racha de 365 días con una llama animada. Cuando el usuario falla un día, la app envía notificaciones de "¡Tu racha está en peligro!" y ofrece "vidas extra" que se pueden comprar. El usuario empieza a sentir ansiedad cuando no puede abrir la app por un viaje.', question:'¿Esta mecánica de racha/streak es un dark pattern o diseño ético?', options:[{letter:'A',text:'Es diseño ético porque motiva la consistencia y el hábito de estudio diario.',correct:false},{letter:'B',text:'Es un dark pattern: crea ansiedad artificial y presiona hacia compras cuando el objetivo debería ser el aprendizaje, no la racha.',correct:true},{letter:'C',text:'Depende del usuario: si le funciona para estudiar, es ético.',correct:false}], feedback_correct:'✓ Correcto. El streak como mecánica puede ser válido, pero cuando genera ansiedad, monetiza el "miedo a perder" y desvía el foco del aprendizaje real hacia la preservación de la racha, se convierte en dark pattern.', feedback_wrong:'No exactamente. La clave no está en si "funciona" para el usuario, sino en si respeta su autonomía y bienestar. Una mecánica que crea ansiedad y presiona compras emocionales está manipulando, no motivando.', reflection:'¿Cómo podrías rediseñar el streak para que apoye la constancia sin generar ansiedad? ¿Qué cambiaría si contara semanas en vez de días?' },
+  { num:2, title:'La tabla de clasificación competitiva', context:'Curso corporativo de ventas', situation:'Un programa de formación en ventas usa un ranking público en tiempo real que muestra el nombre y posición de cada empleado. Los últimos 3 del ranking reciben un email semanal con el asunto "Zona de mejora urgente". Los primeros reciben reconocimiento público en reuniones.', question:'¿Cómo clasificarías este diseño desde una perspectiva ética?', options:[{letter:'A',text:'Es motivador y competitivo, alineado con la cultura de ventas.',correct:false},{letter:'B',text:'Es un dark pattern: el shaming público y la presión negativa deterioran el bienestar psicológico y la colaboración.',correct:true},{letter:'C',text:'Es ético si los empleados pueden optar por no aparecer en el ranking.',correct:false}], feedback_correct:'✓ Correcto. Usar la vergüenza pública y el miedo como palancas motivacionales viola principios básicos del bienestar psicológico. Kim y Werbach (2016) lo identifican como uso manipulador de la presión social.', feedback_wrong:'La opción de "opt-out" puede reducir el daño, pero no elimina el diseño punitivo. El problema de fondo es usar el miedo y la vergüenza como motivadores.', reflection:'¿Cómo podrías rediseñar el leaderboard para promover mejora personal sin comparación punitiva? ¿Qué pasaría si mostrara "progreso propio" en vez de posición relativa?' },
+  { num:3, title:'El aula gamificada con XP', context:'Curso de posgrado — como el que estás viviendo ahora', situation:'Un curso de posgrado reemplaza las notas tradicionales por un sistema de XP (puntos de experiencia). Los estudiantes acumulan XP con cada participación, actividad y contribución. El XP total se convierte en la nota de participación (10%). No hay penalizaciones, solo acumulación positiva.', question:'¿Este diseño es motivación intrínseca o manipulación?', options:[{letter:'A',text:'Es un dark pattern: los puntos siguen siendo una recompensa externa que condiciona la participación.',correct:false},{letter:'B',text:'Es diseño ético: reemplaza la lógica punitiva por acumulación positiva, alinea con SDT y respeta la autonomía del aprendiz.',correct:true},{letter:'C',text:'Ninguno: es solo un cambio cosmético, los puntos son lo mismo que las notas.',correct:false}], feedback_correct:'✓ Correcto. El sistema XP de este laboratorio está diseñado para apoyar la motivación intrínseca: no penaliza, acumula progreso visible, alinea recompensas con competencias reales y hace transparente la lógica de evaluación.', feedback_wrong:'La diferencia entre XP como dark pattern y XP ético está en el diseño: ¿crea ansiedad o confianza? ¿Penaliza o acumula? La lógica de acumulación positiva, alineada a competencias reales, es cualitativamente diferente a las notas punitivas.', reflection:'¿Qué elementos del sistema XP que estás viviendo en este curso te parecen éticamente bien diseñados? ¿Hay algo que cambiarías?' },
+  { num:4, title:'Los badges de LinkedIn Learning', context:'Plataforma de e-learning corporativo', situation:'LinkedIn Learning otorga badges al completar cursos. Estos badges aparecen en el perfil público y pueden ser vistos por reclutadores. Los usuarios empiezan a completar cursos rápidamente, saltándose contenido, solo para obtener el badge y mostrarlo en su perfil.', question:'¿Cuál es el problema de diseño de esta mecánica de badges?', options:[{letter:'A',text:'No hay problema: si completan los cursos, el aprendizaje ocurrirá de alguna forma.',correct:false},{letter:'B',text:'El badge se desacopla del aprendizaje real: motiva la señal (el badge) en vez de la competencia.',correct:true},{letter:'C',text:'Los badges siempre son dark patterns porque son recompensas externas.',correct:false}], feedback_correct:'✓ Correcto. Este es el problema clásico de la gamificación superficial: cuando la recompensa se desacopla de la competencia real que debería representar, los usuarios optimizan para la recompensa, no para el aprendizaje.', feedback_wrong:'Los badges no son inherentemente buenos o malos. El problema aquí es específico: el diseño crea incentivos para "badge hunting" que se desconectan del aprendizaje.', reflection:'¿Cómo redesignarías los badges para que realmente representen competencias? ¿Qué evidencia o criterio debería requerir un badge para ser pedagógicamente válido?' },
+  { num:5, title:'El chatbot motivacional con IA', context:'App de fitness y bienestar', situation:'Una app de fitness usa un chatbot con IA que aprende los patrones del usuario y envía mensajes personalizados. El chatbot adapta el tono según el estado emocional detectado del usuario. No es un humano, pero muchos usuarios no lo saben.', question:'¿Cuál es la consideración ética más importante en este diseño?', options:[{letter:'A',text:'Ninguna: si ayuda al usuario a ejercitarse, el fin justifica el medio.',correct:false},{letter:'B',text:'La transparencia: el usuario debe saber que es una IA, que analiza su estado emocional y cómo se usan esos datos. Sin eso, es manipulación.',correct:true},{letter:'C',text:'El chatbot debería solo enviar datos objetivos, no mensajes motivacionales.',correct:false}], feedback_correct:'✓ Correcto. El diseño ético de IA en gamificación requiere transparencia: ¿sabe el usuario que es una IA? ¿Conoce qué datos analiza? La personalización emocional sin consentimiento informado cruza la línea hacia la manipulación.', feedback_wrong:'El problema no es la motivación en sí, sino la opacidad: usar análisis emocional de IA sin que el usuario lo sepa es manipulación, aunque el resultado sea positivo.', reflection:'¿Qué elementos de transparencia añadirías a este chatbot para hacerlo éticamente sólido?' },
+  { num:6, title:'El sistema de vidas con penalización', context:'Plataforma educativa para niños', situation:'Una plataforma educativa para niños de 8-12 años usa un sistema de "vidas": cada error quita una vida. Al perder todas las vidas, el niño debe esperar 30 minutos para seguir, o los padres pueden comprar "recargas de vidas".', question:'¿Este diseño es ético para un contexto de educación infantil?', options:[{letter:'A',text:'Es ético: enseña a los niños a aceptar consecuencias y a no cometer errores.',correct:false},{letter:'B',text:'No es ético: usa la frustración infantil como palanca de monetización, penaliza el error de aprendizaje y crea presión familiar negativa.',correct:true},{letter:'C',text:'Depende: si los padres pueden controlar el gasto, el sistema puede ser aceptable.',correct:false}], feedback_correct:'✓ Correcto. El sistema usa la frustración de los niños como mecanismo de monetización. El error es parte natural del aprendizaje y penalizarlo con tiempo de espera contradice principios pedagógicos básicos.', feedback_wrong:'El control parental no resuelve el problema de diseño: la mecánica sigue penalizando el error de aprendizaje y convirtiendo la frustración infantil en oportunidad de venta.', reflection:'¿Cómo rediseñarías el feedback de errores en una plataforma infantil? ¿Qué dice la Self-Determination Theory sobre el rol del error en el aprendizaje?' },
+];
+
+let current = 0, answered = [], score = 0;
+
+function init() { answered = []; score = 0; current = 0; document.getElementById('final-panel').classList.remove('show'); renderScenario(); updateProgress(); }
+
+function renderScenario() {
+  const s = SCENARIOS[current], isAnswered = answered[current] !== undefined, userAnswer = answered[current];
+  const optionsHTML = s.options.map((opt, i) => {
+    let cls = 'option-btn';
+    if (isAnswered) { if (opt.correct) cls += ' reveal-correct'; else if (userAnswer === i && !opt.correct) cls += ' selected-wrong'; }
+    return `<button class="${cls}" onclick="${isAnswered ? '' : `answer(${i})`}" ${isAnswered ? 'disabled' : ''}><span class="option-letter">${opt.letter}</span><span class="option-text">${opt.text}</span></button>`;
+  }).join('');
+  let feedbackHTML = '';
+  if (isAnswered) {
+    const correct = s.options[userAnswer].correct;
+    feedbackHTML = `<div class="feedback-reveal show ${correct ? 'correct' : 'wrong'}"><div class="feedback-reveal-title">${correct ? s.feedback_correct : s.feedback_wrong}</div><div class="reflection-prompt">💭 Para reflexionar: ${s.reflection}</div></div>`;
+  }
+  document.getElementById('scenario-container').innerHTML = `<div class="scenario-card">
+    <div class="scenario-card-header"><div class="scenario-num">Escenario ${s.num} de ${SCENARIOS.length}</div><div class="scenario-title">${s.title}</div><div class="scenario-context">📍 ${s.context}</div></div>
+    <div class="scenario-card-body"><div class="scenario-situation">${s.situation}</div><div class="question">${s.question}</div><div class="options-grid">${optionsHTML}</div>${feedbackHTML}</div>
+  </div>
+  <div class="nav-controls">
+    <button class="btn-nav" onclick="prev()" ${current === 0 ? 'disabled' : ''}>← Anterior</button>
+    <span style="font-size:13px;color:var(--ink-soft);">${current + 1} / ${SCENARIOS.length}</span>
+    ${isAnswered ? (current < SCENARIOS.length - 1 ? `<button class="btn-nav primary" onclick="next()">Siguiente →</button>` : `<button class="btn-nav primary" onclick="finish()">Ver resultados →</button>`) : `<button class="btn-nav" disabled>Responde para continuar</button>`}
+  </div>`;
+}
+
+function answer(optIdx) { answered[current] = optIdx; if (SCENARIOS[current].options[optIdx].correct) score++; renderScenario(); updateProgress(); }
+function updateProgress() { const done = answered.filter(a => a !== undefined).length; document.getElementById('progress-fill').style.width = `${(done/SCENARIOS.length)*100}%`; document.getElementById('progress-count').textContent = `${done} / ${SCENARIOS.length}`; }
+function prev() { if (current > 0) { current--; renderScenario(); } }
+function next() { if (current < SCENARIOS.length - 1) { current++; renderScenario(); } }
+function finish() { document.getElementById('scenario-container').innerHTML = ''; document.getElementById('final-panel').classList.add('show'); document.getElementById('final-score-num').textContent = `${score}/6`; }
+function restart() { init(); }
+function downloadHTML() { const blob = new Blob([document.documentElement.outerHTML],{type:'text/html;charset=utf-8'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download='mision1-dilemas-eticos.html'; a.click(); }
+init();
+</script>
+</body>
+</html>
